@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'barlow';
+    src: url("/fonts/Barlow-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-Regular.ttf");
+}
+
+/* Pastikan body menggunakan font default barlow */
+body {
+    @apply font-barlow bg-[#3b3b3b] text-white;
+}
+
+@theme {
+    --font-barlow: "barlow", sans-serif;
+    --font-Poppins: "Poppins", sans-serif;
+
+    /* Warna Existing */
+    --color-hijau: #00B074;
+    --color-merah: #ef4444;
+    --color-biru: #3b82f6;
+    --color-kuning: #f59e0b;
+    --color-latar: #f3f4f6;
+    --color-teks: #374151;
+    --color-teks-samping: #6b7280;
+    --color-garis: #e5e7eb;
+
+    /* Warna Tambahan untuk Dashboard Kopi (Replika Gambar) */
+    --color-dash-dark: #3b3b3b;      /* Background utama abu gelap */
+    --color-dash-sidebar: #dcdcdc;   /* Sidebar abu terang */
+    --color-dash-card: #e5e5e5;      /* Background card menu */
+    --color-dash-accent: #8b5e52;    /* Cokelat tombol (Kopi/Proses) */
+    --color-dash-search: #5c4a46;    /* Warna bar pencarian */
+    --color-dash-text-muted: #8e8e8e;
+}
+
+/* Utility tambahan untuk Sidebar yang melengkung unik di gambar */
+@utility rounded-sidebar {
+    border-radius: 0 40px 40px 0;
+}
