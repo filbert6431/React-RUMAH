@@ -49,7 +49,7 @@ export default function Login() {
 
   // UI Error Info
   const errorInfo = error ? (
-    <div className="bg-red-500/20 border border-red-500/50 mb-8 p-6 text-white rounded-[24px] flex items-center shadow-2xl animate-shake">
+    <div className="bg-[#E2D9C8] border-red-500/50 mb-8 p-6 text-white rounded-[24px] flex items-center shadow-2xl animate-shake">
       <BsFillExclamationDiamondFill className="text-red-500 me-4 text-2xl shrink-0" />
       <span className="font-bold tracking-tight">{error}</span>
     </div>

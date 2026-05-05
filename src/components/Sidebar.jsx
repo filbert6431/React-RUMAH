@@ -9,11 +9,11 @@ import { HiHome, HiOutlineTicket, HiMenu, HiUserCircle, HiLogout } from "react-i
 export default function Sidebar() {
   // Fungsi styling untuk NavLink agar aktif sesuai gambar
   const menuClass = ({ isActive }) =>
-    `relative flex flex-col items-center p-3 transition-all duration-300 group
+    `relative flex flex-col items-center p-3 transition-all duration-300 group 
     ${isActive ? "text-dash-accent scale-110" : "text-gray-500 hover:text-dash-accent"}`;
 
   return (
-    <div className="w-24 bg-dash-sidebar h-[95vh] my-[2.5vh] flex flex-col items-center py-8 rounded-r-[40px] shadow-xl justify-between">
+    <div className="w-24 bg-[#ffffff] h-[95vh] my-[2.5vh] flex flex-col items-center py-8 rounded-r-[40px] shadow-xl justify-between">
 
       {/* Bagian Atas: Logo & Menu */}
       <div className="flex flex-col items-center gap-12 w-full">
@@ -29,7 +29,7 @@ export default function Sidebar() {
             {({ isActive }) => (
               <>
                 <HiHome size={28} />
-                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-red-500 rounded-full" />}
+                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6  rounded-full bg-[#A67B5B]" />}
               </>
             )}
           </NavLink>
@@ -39,7 +39,7 @@ export default function Sidebar() {
             {({ isActive }) => (
               <>
                 <HiMenu size={28} />
-                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-red-500 rounded-full" />}
+                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#A67B5B] rounded-full" />}
               </>
             )}
           </NavLink>
@@ -48,7 +48,7 @@ export default function Sidebar() {
             {({ isActive }) => (
               <>
                 <HiUserCircle size={28} />
-                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-red-500 rounded-full" />}
+                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#A67B5B] rounded-full" />}
               </>
             )}
           </NavLink>
@@ -58,7 +58,7 @@ export default function Sidebar() {
             {({ isActive }) => (
               <>
                 <TbError404 size={28} />
-                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-red-500 rounded-full" />}
+                {isActive && <div className="absolute -right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#A67B5B] rounded-full" />}
               </>
             )}
           </NavLink>

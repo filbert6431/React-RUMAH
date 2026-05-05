@@ -79,22 +79,22 @@ export default function Dashboard() {
             </button>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-6">Menu Kopi</h2>
+          <h2 className="text-2xl font-bold text-black">Menu Kopi</h2>
 
           {/* Grid Menu - Menggunakan Warna Krem Gelap Agar Konsisten */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 hover:-translate-y-1 ">
             {menuKopi.map((item) => (
-              <div key={item.id} className="bg-[#E5D9D0] rounded-[32px] p-5 flex flex-col gap-4 relative shadow-2xl text-gray-800">
+              <div key={item.id} className="bg-[#ffffff] rounded-[32px] p-5 flex flex-col gap-4 relative shadow-2xl text-gray-800">
                 <div className="absolute top-4 right-5 flex gap-2 text-gray-400">
                   <FaEdit className="cursor-pointer hover:text-dash-accent transition" />
                   <FaTrash className="cursor-pointer hover:text-red-500 transition" />
                 </div>
 
                 <div className="flex gap-4">
-                  <img src={item.img} className="w-24 h-24 rounded-2xl object-cover shadow-md" alt={item.name} />
+                  <img src={item.img} className="w-24 h-24 rounded-2xl object-cover shadow-md font-semibold font-PlayfairDisplay" alt={item.name} />
                   <div className="flex-1">
-                    <h3 className="font-black text-xl text-[#2D2825]">{item.name}</h3>
-                    <p className="text-[11px] text-gray-500 leading-tight mt-1 font-medium">{item.desc}</p>
+                    <h3 className="font-semibold text-xl text-[#2D2825] font-semiboldfont-PlayfairDisplay">{item.name}</h3>
+                    <p className="text-[11px] text-gray-500 leading-tight mt-1 font-semibold font-PlayfairDisplay">{item.desc}</p>
                   </div>
                 </div>
 
@@ -103,16 +103,16 @@ export default function Dashboard() {
                    <div>
                      <p className="text-[9px] text-gray-400 uppercase font-black tracking-widest">Rating</p>
                      <div className="flex items-center gap-1 font-bold text-sm">
-                       <FaStar className="text-orange-500" /> {item.rating}
+                       <FaStar className="text-orange-500 font-semibold font-PlayfairDisplay" /> {item.rating}
                      </div>
                    </div>
                    <div className="text-center">
                      <p className="text-[9px] text-gray-400 uppercase font-black tracking-widest">Review</p>
-                     <p className="font-bold text-sm">({item.review})</p>
+                     <p className="font-semibold text-sm font-PlayfairDisplay">({item.review})</p>
                    </div>
                    <div className="text-right">
                      <p className="text-[9px] text-gray-400 uppercase font-black tracking-widest">Harga</p>
-                     <p className="font-black text-sm font-Poppins text-dash-accent">Rp {item.price}</p>
+                     <p className="font-semibold text-sm  font-PlayfairDisplay text-dash-accent ">Rp {item.price}</p>
                    </div>
                 </div>
 
@@ -128,7 +128,7 @@ export default function Dashboard() {
                       ))}
                     </div>
                   </div>
-                  <button className="bg-dash-accent text-white px-6 py-3 rounded-2xl text-[10px] font-black shadow-lg hover:brightness-110 active:scale-95 transition uppercase tracking-tighter">
+                  <button className="bg-dash-accent text-white px-6 py-3 rounded-2xl text-[10px] font-black font-Poppins shadow-lg hover:brightness-110 active:scale-95 transition uppercase tracking-tighter">
                     + Order
                   </button>
                 </div>
@@ -138,7 +138,7 @@ export default function Dashboard() {
         </div>
 
         {/* RIGHT: ORDER PANEL (25%) */}
-        <aside className="flex-[1.2] bg-[#E5D9D0] rounded-[40px] p-6 flex flex-col shadow-2xl border border-white/20">
+        <aside className="flex-[1.2] bg-[#ffffff] rounded-[40px] p-6 flex flex-col shadow-2xl border border-white/20">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-black text-[#2D2825]">Pesanan</h2>
             <span className="bg-[#2D2825] text-white px-3 py-1 rounded-lg font-bold text-[10px]">#8821</span>
@@ -165,7 +165,7 @@ export default function Dashboard() {
 
           {/* Checkout Area */}
           <div className="mt-6 pt-6 border-t-2 border-dashed border-black/10 space-y-3">
-            <div className="flex justify-between text-[11px] font-black text-gray-500 uppercase tracking-widest">
+            <div className="flex justify-between text-[11px] font-p text-gray-500 uppercase tracking-widest">
               <span>Subtotal</span>
               <span className="text-[#2D2825]">Rp 44.000</span>
             </div>

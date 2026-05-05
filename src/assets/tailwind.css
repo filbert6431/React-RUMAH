@@ -10,6 +10,11 @@
     src: url("/fonts/Poppins-Regular.ttf");
 }
 
+@font-face {
+    font-family: "Playfair";
+    src: url("/fonts/PlayfairDisplay-SemiBold.ttf");
+}
+
 /* Pastikan body menggunakan font default barlow */
 body {
     @apply font-barlow bg-[#3b3b3b] text-white;
@@ -18,6 +23,7 @@ body {
 @theme {
     --font-barlow: "barlow", sans-serif;
     --font-Poppins: "Poppins", sans-serif;
+    --font-PlayfairDisplay: "Playfair" sans-serif;
 
     /* Warna Existing */
     --color-hijau: #00B074;
@@ -29,13 +35,16 @@ body {
     --color-teks-samping: #6b7280;
     --color-garis: #e5e7eb;
 
+
+
     /* Warna Tambahan untuk Dashboard Kopi (Replika Gambar) */
     --color-dash-dark: #3b3b3b;      /* Background utama abu gelap */
-    --color-dash-sidebar: #dcdcdc;   /* Sidebar abu terang */
+    --color-dash-sidebar: #E2D9C8;   /* Sidebar abu terang */
     --color-dash-card: #e5e5e5;      /* Background card menu */
-    --color-dash-accent: #8b5e52;    /* Cokelat tombol (Kopi/Proses) */
+    --color-dash-accent: #2A0000;    /* Cokelat tombol (Kopi/Proses) */
     --color-dash-search: #5c4a46;    /* Warna bar pencarian */
     --color-dash-text-muted: #8e8e8e;
+    --color-dash-header: #30261C;
 }
 
 /* Utility tambahan untuk Sidebar yang melengkung unik di gambar */

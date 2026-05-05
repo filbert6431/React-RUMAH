@@ -2,14 +2,14 @@ import { FaBell, FaSearch, FaPlus } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <div className="flex items-center justify-between bg-transparent text-white py-4 px-2">
+    <div className="flex items-center justify-between  bg-dash-header text-white py-4 px-2">
       
       {/* 1. Welcome Text (Sisi Kiri) */}
       <div className="flex flex-col">
-        <p className="text-xs text-gray-400 font-medium">
+        <p className="text-xs text-gray-400  font-semibold  ">
           Selamat datang di Doge Coffee Dashboard!
         </p>
-        <h1 className="text-2xl font-bold tracking-wide">
+        <h1 className="text-2xl font-semibold tracking-wide ">
           Always give the best service
         </h1>
       </div>
@@ -19,7 +19,7 @@ export default function Header() {
         
         {/* Search Bar (Cokelat Gelap) */}
         <div className="relative flex items-center bg-dash-search px-4 py-2 rounded-2xl w-full max-w-xs transition-all focus-within:ring-1 focus-within:ring-dash-accent">
-          <input
+          <input  
             type="text"
             placeholder="cari menu"
             className="bg-transparent outline-none w-full text-sm text-gray-200 placeholder-gray-400"
