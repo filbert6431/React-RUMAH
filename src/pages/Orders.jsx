@@ -1,4 +1,4 @@
-import orders from "../data/orders.json";
+import orders from "../Data/Orders.json";
 import { FaSearch, FaFilter, FaCoffee, FaHistory, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom

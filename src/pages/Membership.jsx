@@ -1,4 +1,4 @@
-import members from "../data/members.json";
+import members from "../Data/Members.json";
 import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
