@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 // 1. Import data lokal kamu
-import members from "../data/members.json";
+import members from "../Data/Members.json";
 
 export default function MemberShipDetail() {
   // 2. Ambil ID dari URL (misal: /membership/1)

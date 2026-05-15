@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import orders from "../data/orders.json";
+import orders from "../Data/Orders.json";
 import { FaChevronLeft, FaCoffee, FaReceipt, FaUser, FaClock, FaCheckCircle } from "react-icons/fa";
 
 export default function OrdersDetail() {
-        
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
