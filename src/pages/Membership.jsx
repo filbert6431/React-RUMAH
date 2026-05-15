@@ -1,6 +1,7 @@
 import members from "../data/members.json";
-import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown } from "react-icons/fa";
+import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
+import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
 
 export default function Membership() {
   const [dataForm, setDataForm] = useState({
@@ -13,7 +14,6 @@ export default function Membership() {
     setDataForm({ ...dataForm, [name]: value });
   };
 
-  // Logika Filtering
   const _searchTerm = dataForm.searchTerm.toLowerCase();
   
   const filteredMembers = members.filter((member) => {
@@ -29,7 +29,7 @@ export default function Membership() {
   });
 
   return (
-    <div className="h-full space-y-8 animate-in fade-in duration-500">
+    <div className="h-full space-y-8 animate-in fade-in duration-500 pb-10">
       
       {/* Header Halaman */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -42,20 +42,18 @@ export default function Membership() {
         </div>
         
         <div className="flex flex-wrap items-center gap-4">
-          {/* Search Box */}
           <div className="relative flex items-center bg-black/40 border border-white/5 rounded-2xl px-5 py-3 shadow-2xl focus-within:ring-2 focus-within:ring-dash-accent/50 transition-all">
             <FaSearch className="text-white/20 mr-3" />
             <input
               type="text"
               name="searchTerm"
-              placeholder="Cari Member ID atau Nama..."
+              placeholder="Cari Member ID..."
               className="bg-transparent outline-none text-sm text-white placeholder-white/20 w-48 md:w-60"
               value={dataForm.searchTerm}
               onChange={handleChange}
             />
           </div>
 
-          {/* Level Filter */}
           <div className="relative">
             <select
               name="selectedLevel"
@@ -83,11 +81,11 @@ export default function Membership() {
           <table className="w-full text-left border-collapse">
             <thead className="bg-[#1E1A18]/50 text-[#D4B5A0] uppercase text-[10px] font-black tracking-[0.2em]">
               <tr>
-                <th className="p-8">Member ID</th>
+                <th className="p-8">ID</th>
                 <th className="p-8">Customer Info</th>
                 <th className="p-8 text-center">Tier Level</th>
                 <th className="p-8 text-center">Loyalty Points</th>
-                <th className="p-8 text-right">Join Date</th>
+                <th className="p-8 text-center">Aksi</th>
               </tr>
             </thead>
 
@@ -104,12 +102,12 @@ export default function Membership() {
 
                     <td className="p-8">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-[22px] bg-[#1E1A18] border border-white/10 flex items-center justify-center text-dash-accent text-xl font-black shadow-inner group-hover:border-dash-accent/50 transition-colors">
+                        <div className="w-12 h-12 rounded-[18px] bg-[#1E1A18] border border-white/10 flex items-center justify-center text-dash-accent text-lg font-black shadow-inner group-hover:border-dash-accent/50 transition-colors">
                           {member.name.charAt(0)}
                         </div>
                         <div>
-                           <p className="text-xl font-black text-white group-hover:text-dash-accent transition-colors">{member.name}</p>
-                           <p className="text-[10px] text-white/20 uppercase font-bold tracking-widest mt-0.5">Verified Member</p>
+                           <p className="text-lg font-black text-white group-hover:text-dash-accent transition-colors">{member.name}</p>
+                           <p className="text-[10px] text-white/20 uppercase font-bold tracking-widest">Joined {new Date(member.joinDate).getFullYear()}</p>
                         </div>
                       </div>
                     </td>
@@ -130,21 +128,22 @@ export default function Membership() {
                     </td>
 
                     <td className="p-8 text-center">
-                      <div className="inline-flex items-end gap-1.5 bg-black/20 px-5 py-3 rounded-2xl border border-white/5">
-                         <span className="font-black text-2xl text-white tracking-tighter leading-none">
+                      <div className="inline-flex items-end gap-1.5 bg-black/20 px-5 py-2.5 rounded-2xl border border-white/5">
+                         <span className="font-black text-xl text-white tracking-tighter leading-none">
                            {member.points.toLocaleString()}
                          </span>
-                         <span className="text-[10px] text-dash-accent font-black mb-0.5">PTS</span>
+                         <span className="text-[9px] text-dash-accent font-black mb-0.5">PTS</span>
                       </div>
                     </td>
-                    
-                    <td className="p-8 text-right">
-                       <div className="flex flex-col items-end">
-                          <span className="text-[10px] text-white/20 font-black uppercase mb-1 tracking-tighter">Member Since</span>
-                          <span className="text-sm font-bold text-[#8E837C] bg-black/10 px-4 py-1.5 rounded-xl border border-white/5">
-                            {new Date(member.joinDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                          </span>
-                       </div>
+
+                    <td className="p-8 text-center">
+                      <Link 
+                        to={`/membership/${member.id}`} 
+                        className="inline-flex items-center gap-2 bg-white/5 hover:bg-dash-accent hover:text-black border border-white/10 px-5 py-2.5 rounded-2xl text-[10px] font-black tracking-widest transition-all group/btn shadow-xl"
+                      >
+                        PROFILE
+                        <FaChevronRight className="group-hover/btn:translate-x-1 transition-transform" size={10} />
+                      </Link>
                     </td>
 
                   </tr>
@@ -152,7 +151,7 @@ export default function Membership() {
               ) : (
                 <tr>
                    <td colSpan="5" className="p-24 text-center text-white/20 font-black italic tracking-widest">
-                      TIDAK ADA MEMBER DITEMUKAN
+                     TIDAK ADA MEMBER DITEMUKAN
                    </td>
                 </tr>
               )}
@@ -168,9 +167,9 @@ export default function Membership() {
         </p>
         
         <div className="flex gap-2">
-           <div className="w-2 h-2 rounded-full bg-slate-400/50"></div>
-           <div className="w-2 h-2 rounded-full bg-amber-400/50"></div>
-           <div className="w-2 h-2 rounded-full bg-purple-400/50"></div>
+           <div className={`w-2 h-2 rounded-full ${filteredMembers.length > 0 ? 'bg-dash-accent animate-pulse' : 'bg-white/10'}`}></div>
+           <div className="w-2 h-2 rounded-full bg-white/10"></div>
+           <div className="w-2 h-2 rounded-full bg-white/10"></div>
         </div>
       </div>
     </div>

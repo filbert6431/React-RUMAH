@@ -8,7 +8,11 @@ function App() {
   const AdminLayout = React.lazy(() => import("./Layout/AdminLayout"));
   const Dashboard = React.lazy(() => import("./pages/Dashboard"));
   const Orders = React.lazy(() => import("./pages/Orders"));
+  const OrdersDetail = React.lazy(() => import("./pages/OrdersDetail"));
+
   const Membership = React.lazy(() => import("./pages/Membership"));
+  const MemberShipDetail = React.lazy(() => import("./pages/MemberShipDetail"));
+
 
   const AuthLayout = React.lazy(() => import("./Layout/AuthLayout"));
   const Login = React.lazy(() => import("./pages/Auth/Halaman_login"));
@@ -22,9 +26,14 @@ function App() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Dashboard />} />
+          
           <Route path="/orders" element={<Orders />} />
+          <Route path="/Orders/:id" element={<OrdersDetail/>} />
+
+          <Route path= "/Membership/:id" element={<MemberShipDetail/>} />
           <Route path="/Membership" element={<Membership />} />
         </Route>
+
 
         <Route element={<AuthLayout />}>
           <Route path="/Login" element={<Login />} />
