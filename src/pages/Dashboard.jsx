@@ -1,5 +1,9 @@
 import React from 'react';
 import { FaStar, FaEdit, FaTrash, FaWallet, FaShoppingCart, FaUserFriends, FaFire } from 'react-icons/fa';
+import OverviewCards from "../components/OverviewCards";
+import QuickActions from "../components/QuickActions";
+import OrderPanel from "../components/OrderPanel";
+import ActivityFeed from "../components/ActivityFeed";
 
 export default function Dashboard() {
   const menuKopi = [
@@ -11,51 +15,7 @@ export default function Dashboard() {
     <div className="flex flex-col h-full gap-6">
       
       {/* SECTION 1: SUMMARY STATS (Kiri ke Kanan) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Total Sales */}
-        <div className="bg-[#2D2825] p-5 rounded-[28px] border border-white/5 flex items-center gap-4 shadow-xl">
-          <div className="w-12 h-12 bg-green-500/20 text-green-400 rounded-2xl flex items-center justify-center text-xl">
-            <FaWallet />
-          </div>
-          <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Total Sales</p>
-            <p className="text-white text-lg font-black font-Poppins">Rp 4.250.000</p>
-          </div>
-        </div>
-
-        {/* Card 2: Orders */}
-        <div className="bg-[#2D2825] p-5 rounded-[28px] border border-white/5 flex items-center gap-4 shadow-xl">
-          <div className="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
-            <FaShoppingCart />
-          </div>
-          <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Orders</p>
-            <p className="text-white text-lg font-black font-Poppins">156 Order</p>
-          </div>
-        </div>
-
-        {/* Card 3: New Members */}
-        <div className="bg-[#2D2825] p-5 rounded-[28px] border border-white/5 flex items-center gap-4 shadow-xl">
-          <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-xl">
-            <FaUserFriends />
-          </div>
-          <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">New Members</p>
-            <p className="text-white text-lg font-black font-Poppins">12 Member</p>
-          </div>
-        </div>
-
-        {/* Card 4: Best Seller */}
-        <div className="bg-[#2D2825] p-5 rounded-[28px] border border-white/5 flex items-center gap-4 shadow-xl">
-          <div className="w-12 h-12 bg-orange-500/20 text-orange-400 rounded-2xl flex items-center justify-center text-xl">
-            <FaFire />
-          </div>
-          <div>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Best Seller</p>
-            <p className="text-white text-lg font-black font-Poppins">Machiato</p>
-          </div>
-        </div>
-      </div>
+      <OverviewCards />
 
       {/* SECTION 2: MAIN CONTENT (Menu & Order Panel) */}
       <div className="flex h-full gap-6 overflow-hidden">
@@ -64,20 +24,7 @@ export default function Dashboard() {
         <div className="flex-[3] overflow-y-auto pr-4 scrollbar-hide pb-10">
           
           {/* Kategori Filter */}
-          <div className="flex gap-4 mb-8">
-            <button className="bg-[#2D2825] text-white/70 border border-white/5 px-6 py-3 rounded-2xl flex items-center gap-2 shadow-sm font-bold transition hover:bg-white/10">
-              <span>🍦</span> Topping
-            </button>
-            <button className="bg-dash-accent text-white px-8 py-3 rounded-2xl flex items-center gap-2 shadow-lg font-bold">
-              <span>☕</span> Kopi
-            </button>
-            <button className="bg-[#2D2825] text-white/70 border border-white/5 px-6 py-3 rounded-2xl flex items-center gap-2 shadow-sm font-bold transition hover:bg-white/10">
-              <span>🫘</span> Bubuk
-            </button>
-            <button className="bg-[#2D2825] text-white/70 border border-white/5 px-6 py-3 rounded-2xl flex items-center gap-2 shadow-sm font-bold transition hover:bg-white/10">
-              <span>🥐</span> Snack
-            </button>
-          </div>
+          <QuickActions />
 
           <h2 className="text-2xl font-bold text-white mb-6">Menu Kopi</h2>
 
@@ -138,51 +85,7 @@ export default function Dashboard() {
         </div>
 
         {/* RIGHT: ORDER PANEL (25%) */}
-        <aside className="flex-[1.2] bg-[#E5D9D0] rounded-[40px] p-6 flex flex-col shadow-2xl border border-white/20">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-black text-[#2D2825]">Pesanan</h2>
-            <span className="bg-[#2D2825] text-white px-3 py-1 rounded-lg font-bold text-[10px]">#8821</span>
-          </div>
-
-          {/* Delivery Tabs */}
-          <div className="flex bg-black/5 p-1.5 rounded-2xl mb-6">
-            <button className="flex-1 py-2 text-[10px] font-black rounded-xl text-gray-500 uppercase">Dine in</button>
-            <button className="flex-1 py-2 text-[10px] font-black rounded-xl bg-dash-accent text-white shadow-md uppercase">Delivery</button>
-            <button className="flex-1 py-2 text-[10px] font-black rounded-xl text-gray-500 uppercase">Pick up</button>
-          </div>
-
-          {/* Order Items List */}
-          <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-hide">
-             <div className="flex gap-3 items-center bg-white/40 p-3 rounded-[24px]">
-                <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=100" className="w-12 h-12 rounded-xl object-cover" alt="Latte" />
-                <div className="flex-1">
-                  <p className="font-black text-[#2D2825] text-xs">Cappuchino</p>
-                  <p className="text-[9px] text-gray-500 font-bold uppercase">Size: L | Qty: 2</p>
-                </div>
-                <p className="font-black text-xs text-dash-accent">Rp 44k</p>
-             </div>
-          </div>
-
-          {/* Checkout Area */}
-          <div className="mt-6 pt-6 border-t-2 border-dashed border-black/10 space-y-3">
-            <div className="flex justify-between text-[11px] font-black text-gray-500 uppercase tracking-widest">
-              <span>Subtotal</span>
-              <span className="text-[#2D2825]">Rp 44.000</span>
-            </div>
-            <div className="flex justify-between text-[11px] font-black text-gray-500 uppercase tracking-widest">
-              <span>Diskon Member</span>
-              <span className="text-green-600">- Rp 4.400</span>
-            </div>
-            <div className="flex justify-between items-center pt-2">
-              <span className="font-black text-[#2D2825] uppercase text-xs">Total</span>
-              <span className="font-black text-2xl text-[#2D2825] font-Poppins">Rp 39.600</span>
-            </div>
-
-            <button className="w-full bg-[#2D2825] text-white py-4 rounded-[24px] font-black shadow-lg hover:brightness-125 transition-all mt-4 uppercase text-[10px] tracking-widest">
-              Konfirmasi Pesanan
-            </button>
-          </div>
-        </aside>
+        <OrderPanel />
 
       </div>
     </div>

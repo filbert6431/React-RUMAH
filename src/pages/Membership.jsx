@@ -2,6 +2,7 @@ import members from "../Data/Members.json";
 import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
+import MembershipTable from "../components/MembershipTable";
 
 export default function Membership() {
   const [dataForm, setDataForm] = useState({
@@ -75,90 +76,7 @@ export default function Membership() {
         </div>
       </div>
 
-      {/* Table Container */}
-      <div className="bg-[#2D2825]/60 backdrop-blur-xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden border border-white/5">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-[#1E1A18]/50 text-[#D4B5A0] uppercase text-[10px] font-black tracking-[0.2em]">
-              <tr>
-                <th className="p-8">ID</th>
-                <th className="p-8">Customer Info</th>
-                <th className="p-8 text-center">Tier Level</th>
-                <th className="p-8 text-center">Loyalty Points</th>
-                <th className="p-8 text-center">Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody className="text-[#E5D9D0]">
-              {filteredMembers.length > 0 ? (
-                filteredMembers.map((member) => (
-                  <tr key={member.id} className="border-t border-white/[0.02] hover:bg-white/[0.02] transition-all group">
-                    
-                    <td className="p-8">
-                      <span className="text-dash-accent font-black tracking-tighter text-lg">
-                        #{member.id.toString().padStart(3, '0')}
-                      </span>
-                    </td>
-
-                    <td className="p-8">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-[18px] bg-[#1E1A18] border border-white/10 flex items-center justify-center text-dash-accent text-lg font-black shadow-inner group-hover:border-dash-accent/50 transition-colors">
-                          {member.name.charAt(0)}
-                        </div>
-                        <div>
-                           <p className="text-lg font-black text-white group-hover:text-dash-accent transition-colors">{member.name}</p>
-                           <p className="text-[10px] text-white/20 uppercase font-bold tracking-widest">Joined {new Date(member.joinDate).getFullYear()}</p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="p-8 text-center">
-                      <span
-                        className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg border ${
-                          member.level === "Platinum"
-                            ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
-                            : member.level === "Gold"
-                            ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                            : "bg-slate-400/10 text-slate-400 border-slate-400/20"
-                        }`}
-                      >
-                        {member.level === "Platinum" ? <FaGem size={12} /> : <FaMedal size={12} />}
-                        {member.level}
-                      </span>
-                    </td>
-
-                    <td className="p-8 text-center">
-                      <div className="inline-flex items-end gap-1.5 bg-black/20 px-5 py-2.5 rounded-2xl border border-white/5">
-                         <span className="font-black text-xl text-white tracking-tighter leading-none">
-                           {member.points.toLocaleString()}
-                         </span>
-                         <span className="text-[9px] text-dash-accent font-black mb-0.5">PTS</span>
-                      </div>
-                    </td>
-
-                    <td className="p-8 text-center">
-                      <Link 
-                        to={`/membership/${member.id}`} 
-                        className="inline-flex items-center gap-2 bg-white/5 hover:bg-dash-accent hover:text-black border border-white/10 px-5 py-2.5 rounded-2xl text-[10px] font-black tracking-widest transition-all group/btn shadow-xl"
-                      >
-                        PROFILE
-                        <FaChevronRight className="group-hover/btn:translate-x-1 transition-transform" size={10} />
-                      </Link>
-                    </td>
-
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                   <td colSpan="5" className="p-24 text-center text-white/20 font-black italic tracking-widest">
-                     TIDAK ADA MEMBER DITEMUKAN
-                   </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <MembershipTable filteredMembers={filteredMembers} />
       
       {/* Footer Summary */}
       <div className="mt-8 flex justify-between items-center px-4">

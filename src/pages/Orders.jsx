@@ -1,7 +1,7 @@
 import orders from "../Data/Orders.json";
-import { FaSearch, FaFilter, FaCoffee, FaHistory, FaChevronRight } from "react-icons/fa";
+import { FaSearch, FaFilter, FaCoffee, FaHistory } from "react-icons/fa";
 import { useState } from "react";
-import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
+import OrdersTable from "../components/OrdersTable";
 
 export default function Orders() {
   const [dataForm, setDataForm] = useState({
@@ -17,13 +17,18 @@ export default function Orders() {
     setDataForm({ ...dataForm, [name]: value });
   };
 
-  const allItems = [...new Set(orders.flatMap((f) => f.items.map(i => i.name)))];
+  // Mengambil daftar unik nama menu dari semua order
+  const allItems = [...new Set(orders.flatMap((order) => order.items.map(item => item.name)))];
 
   const filteredOrders = orders.filter((order) => {
+    // DISESUAIKAN: Menggunakan order.customer (sesuai JSON terbaru) atau order.nama_lengkap
+    const customerName = order.customer_id;
+    const orderId = order.id || order.order_id || "";
+    
     const matchesSearch =
-      order.customer.toLowerCase().includes(_searchTerm) ||
+      customerName.toLowerCase().includes(_searchTerm) ||
       order.status.toLowerCase().includes(_searchTerm) ||
-      order.id.toString().includes(_searchTerm);
+      orderId.toString().includes(_searchTerm);
 
     const matchesItem = _selectedItem
       ? order.items.some((item) => item.name.toLowerCase().includes(_selectedItem))
@@ -38,7 +43,9 @@ export default function Orders() {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <FaHistory className="text-dash-accent" />
+            <div className="p-2 bg-dash-accent/10 rounded-lg">
+                <FaHistory className="text-dash-accent" />
+            </div>
             <h1 className="text-4xl font-black text-white tracking-tight">Riwayat Pesanan</h1>
           </div>
           <p className="text-white/40 text-sm font-medium">Pantau dan kelola seluruh alur transaksi Doge Coffee.</p>
@@ -77,89 +84,8 @@ export default function Orders() {
         </div>
       </div>
 
-      {/* Table Container */}
-      <div className="bg-[#2D2825]/60 backdrop-blur-xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden border border-white/5">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-[#1E1A18]/50 text-[#D4B5A0] uppercase text-[10px] font-black tracking-[0.2em]">
-              <tr>
-                <th className="p-8 text-center">ID</th>
-                <th className="p-8">Pelanggan</th>
-                <th className="p-8">Menu</th>
-                <th className="p-8 text-center">Status</th>
-                <th className="p-8 text-right">Revenue</th>
-                <th className="p-8 text-center">Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody className="text-[#E5D9D0]">
-              {filteredOrders.length > 0 ? (
-                filteredOrders.map((order) => (
-                  <tr key={order.id} className="border-t border-white/[0.02] hover:bg-white/[0.02] transition-all group">
-                    <td className="p-8 text-center">
-                      <span className="bg-[#141110] text-dash-accent border border-dash-accent/20 px-4 py-2 rounded-xl text-xs font-black group-hover:border-dash-accent/50 transition-colors">
-                        #{order.id}
-                      </span>
-                    </td>
-
-                    <td className="p-8">
-                      <p className="text-xl font-black text-white group-hover:text-dash-accent transition-colors">{order.customer}</p>
-                      <p className="text-[10px] text-white/20 uppercase font-bold tracking-widest mt-1">Doge Customer</p>
-                    </td>
-
-                    <td className="p-8">
-                      <div className="flex flex-wrap gap-2">
-                        {order.items.slice(0, 2).map((item, index) => (
-                          <div key={index} className="flex items-center gap-2 bg-black/30 border border-white/5 px-3 py-1.5 rounded-xl">
-                            <span className="text-xs font-bold text-white/80">
-                              <span className="text-dash-accent">{item.qty}x</span> {item.name}
-                            </span>
-                          </div>
-                        ))}
-                        {order.items.length > 2 && (
-                           <span className="text-[10px] text-white/30 font-bold self-center">+{order.items.length - 2} lainnya</span>
-                        )}
-                      </div>
-                    </td>
-
-                    <td className="p-8 text-center">
-                      <span className={`inline-block px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-lg ${
-                        order.status === "Delivered" ? "bg-green-500/10 text-green-400 border-green-500/20" : 
-                        order.status === "Pending" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : 
-                        "bg-red-500/10 text-red-400 border-red-500/20"
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
-
-                    <td className="p-8 text-right">
-                      <span className="font-black text-xl text-white tracking-tight">
-                        Rp {order.total.toLocaleString()}
-                      </span>
-                    </td>
-
-                    <td className="p-8 text-center">
-                      <Link 
-                        to={`/orders/${order.id}`} 
-                        className="inline-flex items-center gap-2 bg-white/5 hover:bg-dash-accent hover:text-black border border-white/10 px-5 py-2.5 rounded-2xl text-xs font-black transition-all group/btn shadow-xl"
-                      >
-                        DETAIL
-                        <FaChevronRight className="group-hover/btn:translate-x-1 transition-transform" size={10} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="p-20 text-center text-white/20 font-bold italic">
-                    Data pesanan tidak ditemukan...
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Tabel Utama */}
+      <OrdersTable filteredOrders={filteredOrders} />
 
       {/* Summary Footer */}
       <div className="flex justify-end pt-4">
@@ -170,7 +96,7 @@ export default function Orders() {
           <div>
             <p className="text-[#1A1614]/60 text-[10px] font-black uppercase tracking-widest">Total Revenue (Filtered)</p>
             <p className="text-4xl font-black tracking-tighter">
-              Rp {filteredOrders.reduce((acc, curr) => acc + curr.total, 0).toLocaleString()}
+              Rp {filteredOrders.reduce((acc, curr) => acc + (curr.total || 0), 0).toLocaleString('id-ID')}
             </p>
           </div>
         </div>
