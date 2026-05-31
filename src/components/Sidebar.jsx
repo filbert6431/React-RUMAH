@@ -97,9 +97,8 @@ export default function Sidebar() {
               <TooltipContent side="right">Membership</TooltipContent>
             </Tooltip>
 
-            <div className="w-12 py-2">
-              <Separator className="bg-white/10" />
-            </div>
+
+              <Separator className="bg-amber-700" />
 
             {/* 404 Page */}
             <Tooltip>
