@@ -24,7 +24,7 @@ export default function Orders() {
     // DISESUAIKAN: Menggunakan order.customer (sesuai JSON terbaru) atau order.nama_lengkap
     const customerName = order.customer_id;
     const orderId = order.id || order.order_id || "";
-    
+
     const matchesSearch =
       customerName.toLowerCase().includes(_searchTerm) ||
       order.status.toLowerCase().includes(_searchTerm) ||
@@ -44,7 +44,7 @@ export default function Orders() {
         <div>
           <div className="flex items-center gap-3 mb-1">
             <div className="p-2 bg-dash-accent/10 rounded-lg">
-                <FaHistory className="text-dash-accent" />
+              <FaHistory className="text-dash-accent" />
             </div>
             <h1 className="text-4xl font-black text-white tracking-tight">Riwayat Pesanan</h1>
           </div>
@@ -89,6 +89,22 @@ export default function Orders() {
 
       {/* Summary Footer */}
       <div className="flex justify-end pt-4">
+
+        {/* Footer Summary */}
+        <div className="mt-8 flex justify-between items-center px-4">
+          <p className="text-[#8E837C] text-xs font-bold uppercase tracking-[0.2em]">
+            Showing <span className="text-white">{filteredOrders.length}</span> of {orders.length} Total Orders
+          </p>
+
+          <div className="flex gap-2">
+            <div className={`w-2 h-2 rounded-full ${filteredOrders.length > 0 ? 'bg-dash-accent animate-pulse' : 'bg-white/10'}`}></div>
+            <div className="w-2 h-2 rounded-full bg-white/10"></div>
+            <div className="w-2 h-2 rounded-full bg-white/10"></div>
+          </div>
+        </div>
+
+
+          {/* Footer summary dengan total revenue dari orders yang sudah difilter */}
         <div className="bg-dash-accent text-[#1A1614] rounded-[32px] px-10 py-6 shadow-2xl flex items-center gap-8 transform hover:scale-[1.02] transition-transform">
           <div className="bg-black/10 p-4 rounded-2xl">
             <FaCoffee className="text-2xl" />

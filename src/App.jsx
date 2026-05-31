@@ -1,5 +1,5 @@
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import './assets/tailwind.css';
 import React, { Suspense } from "react";
 
@@ -9,6 +9,8 @@ function App() {
   const Dashboard = React.lazy(() => import("./pages/Dashboard"));
   const Orders = React.lazy(() => import("./pages/Orders"));
   const OrdersDetail = React.lazy(() => import("./pages/OrdersDetail"));
+
+  const Customer = React.lazy(() => import("./pages/Customer"));
 
   const Membership = React.lazy(() => import("./pages/Membership"));
   const MemberShipDetail = React.lazy(() => import("./pages/MemberShipDetail"));
@@ -30,6 +32,8 @@ function App() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/Orders/:id" element={<OrdersDetail/>} />
 
+          <Route path="/Customer" element={<Customer/>} />
+
           <Route path= "/Membership/:id" element={<MemberShipDetail/>} />
           <Route path="/Membership" element={<Membership />} />
         </Route>
@@ -42,8 +46,9 @@ function App() {
 
 
         {/* Halaman Error Spesifik */}
-        <Route path="/unauthorized" element={<ErrorPage code="401" />} />
-        <Route path="/forbidden" element={<ErrorPage code="403" />} />
+        <Route path="/Unauthorized" element={<ErrorPage code="401" />} />
+        <Route path="/Forbidden" element={<ErrorPage code="403" />} />
+        <Route path="/404" element={<ErrorPage code="404" />} />
 
         {/* Catch-all untuk 404 Not Found */}
         <Route path="*" element={<ErrorPage code="404" />} />

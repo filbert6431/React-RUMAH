@@ -1,7 +1,20 @@
 import { FaChevronRight, FaCoffee, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+import { useState } from "react";
+import { Button } from "../components/ui/button";
+
 export default function OrdersTable({ filteredOrders }) {
+
+  // pagination
+  const [page, setPage] = useState(1)
+
+  const itemsPerPage = 25
+
+  const start = (page - 1) * itemsPerPage
+  const end = start + itemsPerPage
+
+  const currentData = filteredOrders.slice(start, end)
   return (
     <div className="bg-[#2D2825]/60 backdrop-blur-xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden border border-white/5 transition-all duration-500">
       <div className="overflow-x-auto">
@@ -18,10 +31,10 @@ export default function OrdersTable({ filteredOrders }) {
           </thead>
 
           <tbody className="text-[#E5D9D0]">
-            {filteredOrders.length > 0 ? (
-              filteredOrders.map((order) => (
-                <tr 
-                  key={order.order_id} 
+            {currentData.length > 0 ? (
+              currentData.map((order) => (
+                <tr
+                  key={order.order_id}
                   className="border-t border-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 group"
                 >
                   {/* Kolom ID */}
@@ -29,13 +42,13 @@ export default function OrdersTable({ filteredOrders }) {
                     <span className="bg-[#141110] text-dash-accent border border-dash-accent/20 px-4 py-2 rounded-xl text-xs font-black group-hover:border-dash-accent/60 group-hover:shadow-[0_0_15px_rgba(212,181,160,0.1)] transition-all">
                       #{order.order_id}
                     </span>
-                  </td> 
+                  </td>
 
                   {/* Kolom Pelanggan */}
                   <td className="p-8">
                     <div className="flex items-center gap-4">
                       <div className="hidden sm:block">
-                         <FaUserCircle className="text-white/10 text-3xl group-hover:text-dash-accent/40 transition-colors" />
+                        <FaUserCircle className="text-white/10 text-3xl group-hover:text-dash-accent/40 transition-colors" />
                       </div>
                       <div>
                         <p className="text-lg font-black text-white group-hover:text-dash-accent transition-colors leading-none">
@@ -53,8 +66,8 @@ export default function OrdersTable({ filteredOrders }) {
                   <td className="p-8">
                     <div className="flex flex-wrap gap-2 max-w-[300px]">
                       {order.items.slice(0, 2).map((item, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="flex items-center gap-2 bg-black/40 border border-white/5 px-3 py-1.5 rounded-xl group-hover:border-white/10 transition-colors"
                         >
                           <FaCoffee className="text-[10px] text-dash-accent/50" />
@@ -65,9 +78,9 @@ export default function OrdersTable({ filteredOrders }) {
                       ))}
                       {order.items.length > 2 && (
                         <div className="bg-white/5 border border-dashed border-white/10 px-3 py-1.5 rounded-xl self-center">
-                           <span className="text-[10px] text-white/40 font-black">
-                             +{order.items.length - 2} OTHERS
-                           </span>
+                          <span className="text-[10px] text-white/40 font-black">
+                            +{order.items.length - 2} OTHERS
+                          </span>
                         </div>
                       )}
                     </div>
@@ -75,13 +88,12 @@ export default function OrdersTable({ filteredOrders }) {
 
                   {/* Kolom Status */}
                   <td className="p-8 text-center">
-                    <span className={`inline-block px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-lg transition-all duration-300 ${
-                      order.status === "Delivered" 
-                        ? "bg-green-500/10 text-green-400 border-green-500/20 group-hover:bg-green-500/20" 
+                    <span className={`inline-block px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border shadow-lg transition-all duration-300 ${order.status === "Delivered"
+                        ? "bg-green-500/10 text-green-400 border-green-500/20 group-hover:bg-green-500/20"
                         : order.status === "Pending" || order.status === "Processing"
-                        ? "bg-amber-500/10 text-amber-400 border-amber-500/20 group-hover:bg-amber-500/20" 
-                        : "bg-red-500/10 text-red-400 border-red-500/20 group-hover:bg-red-500/20"
-                    }`}>
+                          ? "bg-amber-500/10 text-amber-400 border-amber-500/20 group-hover:bg-amber-500/20"
+                          : "bg-red-500/10 text-red-400 border-red-500/20 group-hover:bg-red-500/20"
+                      }`}>
                       {order.status}
                     </span>
                   </td>
@@ -98,8 +110,8 @@ export default function OrdersTable({ filteredOrders }) {
 
                   {/* Kolom Aksi */}
                   <td className="p-8 text-center">
-                    <Link 
-                      to={`/orders/${order.id}`} 
+                    <Link
+                      to={`/orders/${order.id}`}
                       className="inline-flex items-center gap-2 bg-white/5 hover:bg-dash-accent hover:text-black border border-white/10 hover:border-transparent px-5 py-2.5 rounded-2xl text-[10px] font-black transition-all group/btn shadow-xl active:scale-95"
                     >
                       VIEW DETAIL
@@ -121,6 +133,23 @@ export default function OrdersTable({ filteredOrders }) {
             )}
           </tbody>
         </table>
+        <div className="flex gap-2 mt-4 justify-center items-center">
+          <Button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Previous
+          </Button>
+
+          <span>Page {page}</span>
+
+          <Button
+            disabled={end >= filteredOrders.length}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );
