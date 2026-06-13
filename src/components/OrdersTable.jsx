@@ -1,10 +1,9 @@
-import { FaChevronRight, FaCoffee, FaUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
+import { FaCoffee, FaUserCircle } from "react-icons/fa";
 import { useState } from "react";
 import { Button } from "../components/ui/button";
+import { formatRupiah, getOrderTotal } from "../lib/orderUtils";
 
-export default function OrdersTable({ filteredOrders }) {
+export default function OrdersTable({ filteredOrders, onEdit, onDelete }) {
 
   // pagination
   const [page, setPage] = useState(1)
@@ -15,6 +14,13 @@ export default function OrdersTable({ filteredOrders }) {
   const end = start + itemsPerPage
 
   const currentData = filteredOrders.slice(start, end)
+  const safeOrders = currentData.map((order) => ({
+    ...order,
+    _id: order.id ?? order.order_id,
+    items: Array.isArray(order.items) ? order.items : [],
+    calculatedTotal: getOrderTotal(order.items || []),
+  }))
+
   return (
     <div className="bg-[#2D2825]/60 backdrop-blur-xl rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] overflow-hidden border border-white/5 transition-all duration-500">
       <div className="overflow-x-auto">
@@ -31,16 +37,16 @@ export default function OrdersTable({ filteredOrders }) {
           </thead>
 
           <tbody className="text-[#E5D9D0]">
-            {currentData.length > 0 ? (
-              currentData.map((order) => (
+            {safeOrders.length > 0 ? (
+              safeOrders.map((order) => (
                 <tr
-                  key={order.order_id}
-                  className="border-t border-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 group"
+                  key={order._id}
+                  className="border-t border-white/2 hover:bg-white/4 transition-all duration-300 group"
                 >
                   {/* Kolom ID */}
                   <td className="p-8 text-center">
                     <span className="bg-[#141110] text-dash-accent border border-dash-accent/20 px-4 py-2 rounded-xl text-xs font-black group-hover:border-dash-accent/60 group-hover:shadow-[0_0_15px_rgba(212,181,160,0.1)] transition-all">
-                      #{order.order_id}
+                      #{order.order_id ?? order._id}
                     </span>
                   </td>
 
@@ -102,7 +108,7 @@ export default function OrdersTable({ filteredOrders }) {
                   <td className="p-8 text-right">
                     <div className="flex flex-col items-end">
                       <span className="font-black text-xl text-white tracking-tight group-hover:scale-105 transition-transform">
-                        Rp {Number(order.total).toLocaleString('id-ID')}
+                        {formatRupiah(order.calculatedTotal)}
                       </span>
                       <span className="text-[9px] text-white/10 font-bold uppercase tracking-tighter">Gross Amount</span>
                     </div>
@@ -110,13 +116,24 @@ export default function OrdersTable({ filteredOrders }) {
 
                   {/* Kolom Aksi */}
                   <td className="p-8 text-center">
-                    <Link
-                      to={`/orders/${order.id}`}
-                      className="inline-flex items-center gap-2 bg-white/5 hover:bg-dash-accent hover:text-black border border-white/10 hover:border-transparent px-5 py-2.5 rounded-2xl text-[10px] font-black transition-all group/btn shadow-xl active:scale-95"
-                    >
-                      VIEW DETAIL
-                      <FaChevronRight className="group-hover/btn:translate-x-1 transition-transform" size={10} />
-                    </Link>
+                    <div className="flex flex-col gap-2 items-center">
+                      {onEdit && (
+                        <button
+                          type="button"
+                          onClick={() => onEdit(order)}
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-2xl bg-dash-accent text-black font-black text-[10px] uppercase tracking-[0.2em] transition hover:bg-dash-accent/90"
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => onDelete?.(order._id)}
+                        className="inline-flex items-center justify-center px-4 py-2 rounded-2xl bg-red-500 text-white font-black text-[10px] uppercase tracking-[0.2em] transition hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

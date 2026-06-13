@@ -1,0 +1,32 @@
+[
+  {
+    "promo_id": 1,
+    "nama_promo": "Promo Ramadhan 2026",
+    "discount": 20,
+    "claim_count": 42,
+    "claim_limit": 100,
+    "status_promo": "Aktif",
+    "start_date": "2026-03-01",
+    "end_date": "2026-03-31"
+  },
+  {
+    "promo_id": 2,
+    "nama_promo": "Flash Sale Akhir Tahun",
+    "discount": 30,
+    "claim_count": 15,
+    "claim_limit": 50,
+    "status_promo": "Tidak Aktif",
+    "start_date": "2026-12-20",
+    "end_date": "2026-12-31"
+  },
+  {
+    "promo_id": 3,
+    "nama_promo": "Member Get Member",
+    "discount": 15,
+    "claim_count": 67,
+    "claim_limit": 100,
+    "status_promo": "Aktif",
+    "start_date": "2026-01-01",
+    "end_date": "2026-12-31"
+  }
+]

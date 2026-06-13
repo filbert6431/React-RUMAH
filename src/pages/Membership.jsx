@@ -1,4 +1,4 @@
-import members from "../Data/Members.json";
+import customersData from "../Data/Customers.json";
 import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
@@ -16,14 +16,24 @@ export default function Membership() {
   };
 
   const _searchTerm = dataForm.searchTerm.toLowerCase();
-  
-  const filteredMembers = members.filter((member) => {
-    const matchesSearch = 
-      member.name.toLowerCase().includes(_searchTerm) || 
-      member.id.toString().includes(_searchTerm);
-    
-    const matchesLevel = dataForm.selectedLevel 
-      ? member.level === dataForm.selectedLevel 
+
+  // Map customers data into membership-shaped objects expected by MembershipTable
+  const mapped = customersData.map((c) => ({
+    id: c.ID_Customer ? Number(String(c.ID_Customer).replace(/\D/g, "")) : undefined,
+    customer_id: c.ID_Customer,
+    name: c.Nama_Lengkap || c.name || "-",
+    tanggal_daftar: c.tanggal_daftar || c.joinDate,
+    level_membership: c.level_membership || c.level || c.membershipLevel,
+    points: c.points ?? 0,
+  }));
+
+  const filteredMembers = mapped.filter((member) => {
+    const matchesSearch =
+      (member.name || "").toLowerCase().includes(_searchTerm) ||
+      (member.customer_id || "").toString().toLowerCase().includes(_searchTerm);
+
+    const matchesLevel = dataForm.selectedLevel
+      ? (member.level_membership || member.level) === dataForm.selectedLevel
       : true;
 
     return matchesSearch && matchesLevel;
@@ -81,7 +91,7 @@ export default function Membership() {
       {/* Footer Summary */}
       <div className="mt-8 flex justify-between items-center px-4">
         <p className="text-[#8E837C] text-xs font-bold uppercase tracking-[0.2em]">
-          Showing <span className="text-white">{filteredMembers.length}</span> of {members.length} Total Customers
+          Showing <span className="text-white">{filteredMembers.length}</span> of {customersData.length} Total Customers
         </p>
         
         <div className="flex gap-2">

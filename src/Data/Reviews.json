@@ -1,0 +1,182 @@
+[
+  {
+    "review_id": 1,
+    "customer_id": "CUST0001",
+    "star_review": 5,
+    "review_text": "Kopi yang disajikan sangat enak dan suasana cafe nyaman untuk bekerja."
+  },
+  {
+    "review_id": 2,
+    "customer_id": "CUST0002",
+    "star_review": 4,
+    "review_text": "Pelayanan ramah dan pesanan datang cukup cepat."
+  },
+  {
+    "review_id": 3,
+    "customer_id": "CUST0003",
+    "star_review": 5,
+    "review_text": "Tempat bersih dan pilihan menu cukup beragam."
+  },
+  {
+    "review_id": 4,
+    "customer_id": "CUST0004",
+    "star_review": 3,
+    "review_text": "Suasana nyaman tetapi waktu menunggu pesanan agak lama."
+  },
+  {
+    "review_id": 5,
+    "customer_id": "CUST0005",
+    "star_review": 5,
+    "review_text": "Barista sangat membantu dalam merekomendasikan menu."
+  },
+  {
+    "review_id": 6,
+    "customer_id": "CUST0006",
+    "star_review": 4,
+    "review_text": "Harga sesuai dengan kualitas minuman yang diberikan."
+  },
+  {
+    "review_id": 7,
+    "customer_id": "CUST0007",
+    "star_review": 5,
+    "review_text": "Tempat favorit untuk mengerjakan tugas dan meeting kecil."
+  },
+  {
+    "review_id": 8,
+    "customer_id": "CUST0008",
+    "star_review": 2,
+    "review_text": "Pelayanan cukup lambat saat cafe sedang ramai."
+  },
+  {
+    "review_id": 9,
+    "customer_id": "CUST0009",
+    "star_review": 4,
+    "review_text": "Interior cafe menarik dan instagramable."
+  },
+  {
+    "review_id": 10,
+    "customer_id": "CUST0010",
+    "star_review": 5,
+    "review_text": "Musik yang diputar membuat suasana semakin nyaman."
+  },
+  {
+    "review_id": 11,
+    "customer_id": "CUST0011",
+    "star_review": 4,
+    "review_text": "Koneksi WiFi stabil dan cocok untuk bekerja."
+  },
+  {
+    "review_id": 12,
+    "customer_id": "CUST0012",
+    "star_review": 5,
+    "review_text": "Kebersihan meja dan area cafe sangat terjaga."
+  },
+  {
+    "review_id": 13,
+    "customer_id": "CUST0013",
+    "star_review": 3,
+    "review_text": "Menu cukup enak namun pilihan makanan masih terbatas."
+  },
+  {
+    "review_id": 14,
+    "customer_id": "CUST0014",
+    "star_review": 4,
+    "review_text": "Lokasi strategis dan mudah dijangkau."
+  },
+  {
+    "review_id": 15,
+    "customer_id": "CUST0015",
+    "star_review": 5,
+    "review_text": "Salah satu coffee shop terbaik yang pernah saya kunjungi."
+  },
+  {
+    "review_id": 16,
+    "customer_id": "CUST0016",
+    "star_review": 4,
+    "review_text": "Tempat duduk cukup banyak dan nyaman."
+  },
+  {
+    "review_id": 17,
+    "customer_id": "CUST0017",
+    "star_review": 5,
+    "review_text": "Pelayanan cepat meskipun cafe sedang ramai."
+  },
+  {
+    "review_id": 18,
+    "customer_id": "CUST0018",
+    "star_review": 3,
+    "review_text": "Parkiran agak sempit pada jam sibuk."
+  },
+  {
+    "review_id": 19,
+    "customer_id": "CUST0019",
+    "star_review": 5,
+    "review_text": "Minuman selalu konsisten setiap kali berkunjung."
+  },
+  {
+    "review_id": 20,
+    "customer_id": "CUST0020",
+    "star_review": 4,
+    "review_text": "Staff sangat ramah dan komunikatif."
+  },
+  {
+    "review_id": 21,
+    "customer_id": "CUST0021",
+    "star_review": 5,
+    "review_text": "Suasana tenang dan cocok untuk membaca buku."
+  },
+  {
+    "review_id": 22,
+    "customer_id": "CUST0022",
+    "star_review": 4,
+    "review_text": "Desain interior modern dan nyaman dipandang."
+  },
+  {
+    "review_id": 23,
+    "customer_id": "CUST0023",
+    "star_review": 2,
+    "review_text": "Pesanan sempat tertukar namun akhirnya diganti dengan baik."
+  },
+  {
+    "review_id": 24,
+    "customer_id": "CUST0024",
+    "star_review": 5,
+    "review_text": "Pelayanan pelanggan sangat memuaskan."
+  },
+  {
+    "review_id": 25,
+    "customer_id": "CUST0025",
+    "star_review": 4,
+    "review_text": "Pilihan minuman non-kopi cukup banyak."
+  },
+  {
+    "review_id": 26,
+    "customer_id": "CUST0026",
+    "star_review": 5,
+    "review_text": "Tempat yang nyaman untuk berkumpul bersama teman."
+  },
+  {
+    "review_id": 27,
+    "customer_id": "CUST0027",
+    "star_review": 3,
+    "review_text": "AC kurang dingin saat pengunjung sedang ramai."
+  },
+  {
+    "review_id": 28,
+    "customer_id": "CUST0028",
+    "star_review": 5,
+    "review_text": "Kualitas makanan dan minuman sangat memuaskan."
+  },
+  {
+    "review_id": 29,
+    "customer_id": "CUST0029",
+    "star_review": 4,
+    "review_text": "Harga masih cukup terjangkau untuk mahasiswa."
+  },
+  {
+    "review_id": 30,
+    "customer_id": "CUST0030",
+    "star_review": 5,
+    "review_text": "Pasti akan kembali lagi dan merekomendasikan tempat ini kepada teman."
+  }
+]

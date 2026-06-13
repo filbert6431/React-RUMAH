@@ -1,0 +1,101 @@
+[
+  {
+    "staff_id": 1,
+    "nama_lengkap": "Filbert Anggriawan",
+    "no_telp": "081226181479",
+    "role": "Admin",
+    "status": "Aktif",
+    "gender": "Laki-laki",
+    "email": "filbert24si@mahasiswa.pcr",
+    "password": "filbert1346",
+    "foto_url": "https://i.pravatar.cc/300?img=50"
+  },
+  {
+    "staff_id": 2,
+    "nama_lengkap": "Andi Saputra",
+    "no_telp": "081234567890",
+    "role": "Manager",
+    "status": "Aktif",
+    "gender": "Laki-laki",
+    "email": "andi.saputra@toko.com",
+    "password": "pass_andi02",
+    "foto_url": "https://i.pravatar.cc/300?img=11"
+  },
+  {
+    "staff_id": 3,
+    "nama_lengkap": "Siti Rahma",
+    "no_telp": "081345678901",
+    "role": "Barista",
+    "status": "Aktif",
+    "gender": "Perempuan",
+    "email": "siti.rahma@toko.com",
+    "password": "pass_siti03",
+    "foto_url": "https://i.pravatar.cc/300?img=32"
+  },
+  {
+    "staff_id": 4,
+    "nama_lengkap": "Budi Hartono",
+    "no_telp": "081456789012",
+    "role": "Waiter",
+    "status": "Cuti",
+    "gender": "Laki-laki",
+    "email": "budi.hartono@toko.com",
+    "password": "pass_budi04",
+    "foto_url": "https://i.pravatar.cc/300?img=15"
+  },
+  {
+    "staff_id": 5,
+    "nama_lengkap": "Rina Putri",
+    "no_telp": "081567890123",
+    "role": "Barista",
+    "status": "Aktif",
+    "gender": "Perempuan",
+    "email": "rina.putri@toko.com",
+    "password": "pass_rina05",
+    "foto_url": "https://i.pravatar.cc/300?img=47"
+  },
+  {
+    "staff_id": 6,
+    "nama_lengkap": "Dimas Pratama",
+    "no_telp": "081678901234",
+    "role": "Waiter",
+    "status": "Aktif",
+    "gender": "Laki-laki",
+    "email": "dimas.pratama@toko.com",
+    "password": "pass_dimas06",
+    "foto_url": "https://i.pravatar.cc/300?img=19"
+  },
+  {
+    "staff_id": 7,
+    "nama_lengkap": "Nabila Azzahra",
+    "no_telp": "081789012345",
+    "role": "Manager",
+    "status": "Aktif",
+    "gender": "Perempuan",
+    "email": "nabila.azzahra@toko.com",
+    "password": "pass_nabila07",
+    "foto_url": "https://i.pravatar.cc/300?img=44"
+  },
+  {
+    "staff_id": 8,
+    "nama_lengkap": "Fajar Nugroho",
+    "no_telp": "081890123456",
+    "role": "Supplier",
+    "status": "Aktif",
+    "gender": "Laki-laki",
+    "email": "fajar.nugroho@toko.com",
+    "password": "pass_fajar08",
+    "foto_url": "https://i.pravatar.cc/300?img=21"
+  },
+  {
+    "staff_id": 9,
+    "nama_lengkap": "Aulia Maharani",
+    "no_telp": "081901234567",
+    "role": "Barista",
+    "status": "Resign",
+    "gender": "Perempuan",
+    "email": "aulia.maharani@toko.com",
+    "password": "pass_aulia09",
+    "foto_url": "https://i.pravatar.cc/300?img=48"
+  }
+]

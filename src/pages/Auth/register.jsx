@@ -1,7 +1,76 @@
 import { FaCoffee, FaLock, FaEnvelope, FaUser, FaArrowRight, FaShieldAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { staffAPI } from "../../Services/Staff";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [dataForm, setDataForm] = useState({
+    nama_lengkap: "",
+    email: "",
+    password: "",
+    no_telp: "",
+    gender: "",
+  });
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setDataForm({
+      ...dataForm,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      // Check email uniqueness client-side to avoid server PK/unique conflicts
+      const staffList = await staffAPI.fetchStaff();
+      const exists = staffList.some(
+        (s) => s.email?.toLowerCase() === dataForm.email.trim().toLowerCase()
+      );
+
+      if (exists) {
+        setError("Email sudah terdaftar.");
+        setLoading(false);
+        return;
+      }
+
+      await staffAPI.createStaff({
+        nama_lengkap: dataForm.nama_lengkap,
+        email: dataForm.email,
+        password: dataForm.password,
+        no_telp: dataForm.no_telp,
+        gender: dataForm.gender,
+        role: "Admin",
+        status: "Aktif",
+      });
+
+      setSuccess("Registrasi berhasil. Silakan login.");
+
+      
+      setDataForm({
+        nama_lengkap: "",
+        email: "",
+        password: "",
+        no_telp: "",
+        gender: "",
+      });
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Gagal melakukan registrasi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#141414] flex items-center justify-center p-8">
       {/* Container Ultra-Wide 1400px */}
@@ -48,16 +117,32 @@ export default function Register() {
             <p className="text-gray-500 text-xl font-medium">Lengkapi protokol data untuk akses dashboard.</p>
           </div>
           
-          <form className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {error ? (
+              <div className="bg-red-500/20 border border-red-500/50 p-5 rounded-[24px] text-white font-bold">
+                {error}
+              </div>
+            ) : null}
+
+            {success ? (
+              <div className="bg-green-500/20 border border-green-500/50 p-5 rounded-[24px] text-white font-bold">
+                {success}
+              </div>
+            ) : null}
+
             {/* Input Full Name */}
             <div className="space-y-4">
               <label className="text-sm font-black text-gray-500 uppercase tracking-[0.3em] ml-2">Full Name</label>
               <div className="relative flex items-center group">
                 <FaUser className="absolute left-7 text-gray-600 group-focus-within:text-dash-accent transition-colors text-xl" />
                 <input 
-                  type="text" 
+                  type="text"
+                  name="nama_lengkap"
+                  value={dataForm.nama_lengkap}
+                  onChange={handleChange}
                   placeholder="Nama Lengkap Anda"
                   className="w-full bg-black/40 border-2 border-white/5 rounded-[32px] py-7 pl-16 pr-8 text-lg text-white outline-none focus:ring-8 focus:ring-dash-accent/10 focus:border-dash-accent/50 transition-all duration-500 placeholder:text-gray-800"
+                  required
                 />
               </div>
             </div>
@@ -68,9 +153,13 @@ export default function Register() {
               <div className="relative flex items-center group">
                 <FaEnvelope className="absolute left-7 text-gray-600 group-focus-within:text-dash-accent transition-colors text-xl" />
                 <input 
-                  type="email" 
+                  type="email"
+                  name="email"
+                  value={dataForm.email}
+                  onChange={handleChange}
                   placeholder="nama@dogecoffee.corp"
                   className="w-full bg-black/40 border-2 border-white/5 rounded-[32px] py-7 pl-16 pr-8 text-lg text-white outline-none focus:ring-8 focus:ring-dash-accent/10 focus:border-dash-accent/50 transition-all duration-500 placeholder:text-gray-800"
+                  required
                 />
               </div>
             </div>
@@ -81,11 +170,50 @@ export default function Register() {
               <div className="relative flex items-center group">
                 <FaLock className="absolute left-7 text-gray-600 group-focus-within:text-dash-accent transition-colors text-xl" />
                 <input 
-                  type="password" 
+                  type="password"
+                  name="password"
+                  value={dataForm.password}
+                  onChange={handleChange}
                   placeholder="Min. 8 Karakter Kombinasi"
                   className="w-full bg-black/40 border-2 border-white/5 rounded-[32px] py-7 pl-16 pr-8 text-lg text-white outline-none focus:ring-8 focus:ring-dash-accent/10 focus:border-dash-accent/50 transition-all duration-500 placeholder:text-gray-800"
+                  required
                 />
               </div>
+            </div>
+
+            {/* Input Phone Number */}
+            <div className="space-y-4">
+              <label className="text-sm font-black text-gray-500 uppercase tracking-[0.3em] ml-2">Phone Number</label>
+              <div className="relative flex items-center group">
+                <span className="absolute left-7 text-gray-600 text-xl">📞</span>
+                <input
+                  type="tel"
+                  name="no_telp"
+                  value={dataForm.no_telp}
+                  onChange={handleChange}
+                  placeholder="081234567890"
+                  className="w-full bg-black/40 border-2 border-white/5 rounded-[32px] py-7 pl-16 pr-8 text-lg text-white outline-none focus:ring-8 focus:ring-dash-accent/10 focus:border-dash-accent/50 transition-all duration-500 placeholder:text-gray-800"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Input Gender */}
+            <div className="space-y-4">
+              <label className="text-sm font-black text-gray-500 uppercase tracking-[0.3em] ml-2">Gender</label>
+              <select
+                name="gender"
+                value={dataForm.gender}
+                onChange={handleChange}
+                className="w-full bg-black/40 border-2 border-white/5 rounded-[32px] py-7 px-6 text-lg text-white outline-none focus:ring-8 focus:ring-dash-accent/10 focus:border-dash-accent/50 transition-all duration-500"
+                required
+              >
+                <option value="" disabled>
+                  Pilih Gender
+                </option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
             </div>
 
             <div className="px-4">

@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import orders from "../Data/Orders.json";
 import { FaCoffee, FaReceipt, FaUser, FaClock, FaCheckCircle } from "react-icons/fa";
 import BackButton from "../components/BackButton";
 import OrderHeader from "../components/OrderHeader";
 import OrderDetailLayout from "../components/OrderDetailLayout";
+import { ordersAPI } from "../Services/Orders";
+import { formatRupiah, getOrderTotal } from "../lib/orderUtils";
 
 export default function OrdersDetail() {
 
@@ -13,9 +14,14 @@ export default function OrdersDetail() {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    // Mencari data order berdasarkan ID dari file JSON
-    const foundOrder = orders.find((o) => o.id.toString() === id);
-    setOrder(foundOrder);
+    const loadOrder = async () => {
+      // Detail page reads from the same frontend-only order store as the table.
+      const orders = await ordersAPI.fetchOrders();
+      const foundOrder = orders.find((o) => String(o.id) === String(id));
+      setOrder(foundOrder || null);
+    };
+
+    loadOrder();
   }, [id]);
 
   if (!order) {
@@ -26,6 +32,8 @@ export default function OrdersDetail() {
       </div>
     );
   }
+
+  const total = getOrderTotal(order.items || []);
 
   return (
     <div className="h-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -72,9 +80,9 @@ export default function OrdersDetail() {
                           <span className="font-bold text-lg">{item.name}</span>
                         </td>
                         <td className="py-6 text-center font-black text-white/40">{item.qty}x</td>
-                        <td className="py-6 text-right font-medium text-white/60">Rp {(order.total / item.qty).toLocaleString()}</td>
+                        <td className="py-6 text-right font-medium text-white/60">{formatRupiah(item.price)}</td>
                         <td className="py-6 text-right font-black text-xl tracking-tighter">
-                          Rp {(order.total).toLocaleString()}
+                          {formatRupiah(item.qty * item.price)}
                         </td>
                       </tr>
                     ))}
@@ -86,7 +94,7 @@ export default function OrdersDetail() {
               <div className="p-8 bg-black/20 flex justify-between items-center">
                  <span className="text-white/40 font-bold uppercase text-xs tracking-widest">Total Bayar</span>
                  <span className="text-4xl font-black text-dash-accent tracking-tighter">
-                    Rp {order.total.toLocaleString()}
+                    {formatRupiah(total)}
                  </span>
               </div>
             </div>
@@ -102,10 +110,10 @@ export default function OrdersDetail() {
               <h3 className="text-white/20 font-black uppercase text-[10px] tracking-[0.2em] mb-6">Informasi Pelanggan</h3>
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-14 h-14 rounded-[22px] bg-dash-accent flex items-center justify-center text-black text-2xl font-black">
-                  {order.customer.charAt(0)}
+                  {order.customer_id?.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-white">{order.customer}</p>
+                  <p className="text-2xl font-black text-white">{order.customer_id}</p>
                   <p className="text-dash-accent/60 text-xs font-bold">Doge Loyal Member</p>
                 </div>
               </div>

@@ -3,7 +3,7 @@ import { BsFillExclamationDiamondFill } from "react-icons/bs"; // Tambahkan ini
 import { ImSpinner2 } from "react-icons/im"; // Tambahkan ini
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios"; // Pastikan axios di-import
+import { staffAPI } from "../../Services/Staff";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,28 +23,29 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Ini penting agar page tidak reload
+    e.preventDefault();
     setLoading(true);
-    setError(""); // Gunakan string kosong untuk reset error
+    setError("");
 
-    axios
-      .post("https://dummyjson.com/user/login", {
-        username: dataForm.email,
-        password: dataForm.password,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        // Tangkap pesan error dari server
-        const msg = err.response?.data?.message || "Authentication Failed";
-        setError(msg);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      const staffList = await staffAPI.fetchStaff();
+      const matchedStaff = staffList.find(
+        (staff) =>
+          staff.email?.toLowerCase() === dataForm.email.trim().toLowerCase() &&
+          staff.password === dataForm.password
+      );
+
+      if (!matchedStaff) {
+        throw new Error("Email atau password tidak cocok.");
+      }
+
+      localStorage.setItem("staffUser", JSON.stringify(matchedStaff));
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Authentication Failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // UI Error Info

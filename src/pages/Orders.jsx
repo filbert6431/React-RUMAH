@@ -1,37 +1,76 @@
-import orders from "../Data/Orders.json";
-import { FaSearch, FaFilter, FaCoffee, FaHistory } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaSearch, FaFilter, FaHistory, FaCoffee } from "react-icons/fa";
 import OrdersTable from "../components/OrdersTable";
+import { ordersAPI } from "../Services/Orders";
+import { getOrderTotal } from "../lib/orderUtils";
+
+const initialFilterState = {
+  searchTerm: "",
+  selectedItem: "",
+};
 
 export default function Orders() {
-  const [dataForm, setDataForm] = useState({
-    searchTerm: '',
-    selectedItem: '',
-  });
-
-  const _searchTerm = dataForm.searchTerm.toLowerCase();
-  const _selectedItem = dataForm.selectedItem.toLowerCase();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [dataForm, setDataForm] = useState(initialFilterState);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setDataForm({ ...dataForm, [name]: value });
   };
 
-  // Mengambil daftar unik nama menu dari semua order
-  const allItems = [...new Set(orders.flatMap((order) => order.items.map(item => item.name)))];
+  const loadOrders = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const data = await ordersAPI.fetchOrders();
+      setOrders(data);
+    } catch (err) {
+      setError(err.message || "Gagal memuat data pesanan.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Hapus pesanan ini?")) return;
+    setLoading(true);
+    setError("");
+
+    try {
+      await ordersAPI.deleteOrder(id);
+      setSuccess("Pesanan berhasil dihapus.");
+      await loadOrders();
+    } catch (err) {
+      setError(err.message || "Gagal menghapus pesanan.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const _searchTerm = dataForm.searchTerm.toLowerCase();
+  const _selectedItem = dataForm.selectedItem.toLowerCase();
+
+  const allItems = [...new Set(orders.flatMap((order) => Array.isArray(order.items) ? order.items.map((item) => item.name) : []))];
 
   const filteredOrders = orders.filter((order) => {
-    // DISESUAIKAN: Menggunakan order.customer (sesuai JSON terbaru) atau order.nama_lengkap
-    const customerName = order.customer_id;
-    const orderId = order.id || order.order_id || "";
+    const customerName = String(order.customer_id || "");
+    const orderId = String((order.id ?? order.order_id) || "");
 
     const matchesSearch =
       customerName.toLowerCase().includes(_searchTerm) ||
-      order.status.toLowerCase().includes(_searchTerm) ||
-      orderId.toString().includes(_searchTerm);
+      String(order.status || "").toLowerCase().includes(_searchTerm) ||
+      orderId.toLowerCase().includes(_searchTerm);
 
     const matchesItem = _selectedItem
-      ? order.items.some((item) => item.name.toLowerCase().includes(_selectedItem))
+      ? Array.isArray(order.items) && order.items.some((item) => String(item.name || "").toLowerCase().includes(_selectedItem))
       : true;
 
     return matchesSearch && matchesItem;
@@ -84,8 +123,15 @@ export default function Orders() {
         </div>
       </div>
 
-      {/* Tabel Utama */}
-      <OrdersTable filteredOrders={filteredOrders} />
+      {error && <div className="rounded-3xl bg-red-500/10 border border-red-500/20 p-4 text-red-100">{error}</div>}
+      {success && <div className="rounded-3xl bg-green-500/10 border border-green-500/20 p-4 text-green-100">{success}</div>}
+
+      <div className={loading ? "opacity-60 pointer-events-none transition" : "transition"}>
+        <OrdersTable
+          filteredOrders={filteredOrders}
+          onDelete={handleDelete}
+        />
+      </div>
 
       {/* Summary Footer */}
       <div className="flex justify-end pt-4">
@@ -112,7 +158,7 @@ export default function Orders() {
           <div>
             <p className="text-[#1A1614]/60 text-[10px] font-black uppercase tracking-widest">Total Revenue (Filtered)</p>
             <p className="text-4xl font-black tracking-tighter">
-              Rp {filteredOrders.reduce((acc, curr) => acc + (curr.total || 0), 0).toLocaleString('id-ID')}
+              Rp {filteredOrders.reduce((acc, curr) => acc + getOrderTotal(curr.items || []), 0).toLocaleString('id-ID')}
             </p>
           </div>
         </div>

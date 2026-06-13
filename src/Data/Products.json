@@ -1,0 +1,74 @@
+[
+  {
+         
+    "product_id": 1,
+    "nama_product": "Espresso",
+    "kategori": "Coffee",
+    "stock": 50,
+    "harga_product": 20000,
+    "image_url": "public/images/espresso.jpg"
+  },
+  {
+         
+    "product_id": 2,
+    "nama_product": "Americano",
+    "kategori": "Coffee",
+    "stock": 45,
+    "harga_product": 25000,
+    "image_url": "public/images/Americano.jpg"
+  },
+  {
+         
+    "product_id": 3,
+    "nama_product": "Cappuccino",
+    "kategori": "Coffee",
+    "stock": 40,
+    "harga_product": 28000,
+    "image_url": "public/images/Cappuccino.jpg"
+  },
+  {
+         
+    "product_id": 4,
+    "nama_product": "Caramel Latte",
+    "kategori": "Coffee",
+    "stock": 35,
+    "harga_product": 32000,
+    "image_url": "public/images/Caramel Latte.jpg"
+  },
+  {
+     
+    "product_id": 5,
+    "nama_product": "Matcha Latte",
+    "kategori": "Non-Coffee",
+    "stock": 30,
+    "harga_product": 30000,
+    "image_url": "public/images/Matcha Latte.jpg"
+  },
+  {
+         
+    "product_id": 6,
+    "nama_product": "Chocolate Frappe",
+    "kategori": "Non-Coffee",
+    "stock": 25,
+    "harga_product": 35000,
+    "image_url": "public/images/Chocolate Frape.jpg"
+  },
+  {
+         
+    "product_id": 7,
+    "nama_product": "Croissant Butter",
+    "kategori": "Pastry",
+    "stock": 20,
+    "harga_product": 22000,
+    "image_url": "public/images/Croissant Butter.jpg"
+  },
+  {
+     
+    "product_id": 8,
+    "nama_product": "Cheesecake Slice",
+    "kategori": "Dessert",
+    "stock": 15,
+    "harga_product": 38000,
+    "image_url": "public/images/Cheesecake Slice.jpg"
+  }
+]

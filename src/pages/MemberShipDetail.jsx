@@ -4,7 +4,7 @@ import BackButton from "../components/BackButton";
 import MembershipHeader from "../components/MembershipHeader";
 import MembershipLayout from "../components/MembershipLayout";
 
-import members from "../Data/Members.json";
+import customersData from "../Data/Customers.json";
 
 export default function MemberShipDetail() {
   const { id } = useParams();
@@ -12,15 +12,24 @@ export default function MemberShipDetail() {
   const [member, setMember] = useState(null);
 
   useEffect(() => {
-    const foundMember = members.find(
-      (m) => m.id.toString() === id || m.customer_id === id
+    const found = customersData.find(
+      (c) => String(c.ID_Customer) === id || String(c.ID_Customer) === `CUST${id}` || String((c.ID_Customer || "")).includes(id)
     );
-    setMember(foundMember);
+    if (found) {
+      // normalize to membership-shaped object expected by the layout
+      setMember({
+        customer_id: found.ID_Customer,
+        name: found.Nama_Lengkap || found.name,
+        level_membership: found.level_membership || found.level || found.membershipLevel,
+        tanggal_daftar: found.tanggal_daftar || found.joinDate,
+        points: found.points ?? 0,
+      });
+    } else setMember(null);
   }, [id]);
 
   if (!member) return <div className="text-white p-10">Data member tidak ditemukan...</div>;
 
-  const memberId = member.customer_id || member.id;
+  const memberId = member.customer_id;
   const level = member.level_membership || member.level;
   const joinDate = member.tanggal_daftar || member.joinDate;
   const status = member.status_member || "Aktif";
