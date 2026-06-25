@@ -64,8 +64,9 @@ export default function Reviews() {
       setSubmitSuccess("Terima kasih! Ulasan Anda berhasil dikirim.");
 
       await load();
-    } catch {
-      setSubmitError("Gagal mengirim ulasan. Silakan coba lagi.");
+    } catch (e) {
+      console.error("Review submit error:", e);
+      setSubmitError("Review gagal, silahkan coba lagi.");
     } finally {
       setSubmitLoading(false);
     }

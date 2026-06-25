@@ -19,8 +19,7 @@
 - [x] Step 5
 - [x] Step 6
 - [x] Step 7
-- [ ] Step 8
-
+- [ ] Step 8 (verify backend data mapping + empty states in all cases)
 
 
 

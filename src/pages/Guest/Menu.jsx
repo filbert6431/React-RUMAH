@@ -164,7 +164,9 @@ export default function Menu() {
       setCheckoutSuccess("Checkout berhasil! Pesanan tersimpan.");
       setCart({});
     } catch (e) {
-      setCheckoutError("Checkout gagal. Silakan coba lagi.");
+      // Avoid showing raw error; keep user-friendly message.
+      console.error("Checkout error:", e);
+      setCheckoutError("Checkout gagal, kemungkinan koneksi ke database sedang bermasalah. Silakan coba lagi.");
     } finally {
       setCheckoutLoading(false);
     }
