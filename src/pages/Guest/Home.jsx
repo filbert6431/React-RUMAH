@@ -458,6 +458,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section>
+        <p> testing aplikasi</p>
+      </section>
     </div>
   );
 }
