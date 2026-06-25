@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaTags } from "react-icons/fa";
-import { promoAPI } from "../Services/Promo";
+import { promoAPI } from "../../Services/Promo";
 
 export default function Promo() {
   const [promoList, setPromoList] = useState([]);

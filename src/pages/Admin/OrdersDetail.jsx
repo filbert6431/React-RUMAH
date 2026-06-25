@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaCoffee, FaReceipt, FaUser, FaClock, FaCheckCircle } from "react-icons/fa";
-import BackButton from "../components/BackButton";
-import OrderHeader from "../components/OrderHeader";
-import OrderDetailLayout from "../components/OrderDetailLayout";
-import { ordersAPI } from "../Services/Orders";
-import { formatRupiah, getOrderTotal } from "../lib/orderUtils";
+import BackButton from "../../components/BackButton";
+import OrderHeader from "../../components/Admin/OrderHeader";
+import OrderDetailLayout from "../../components/Admin/OrderDetailLayout";
+import { ordersAPI } from "../../Services/Orders";
+import { formatRupiah, getOrderTotal } from "../../lib/orderUtils";
 
 export default function OrdersDetail() {
 

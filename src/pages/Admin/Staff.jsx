@@ -1,7 +1,7 @@
 import { FaSearch, FaFilter, FaUserTie } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { staffAPI } from "../Services/Staff";
-import StaffTable from "../components/StaffTable";
+import { staffAPI } from "../../Services/Staff";
+import StaffTable from "../../components/Admin/StaffTable";
 
 export default function Staff() {
   const [staffList, setStaffList] = useState([]);

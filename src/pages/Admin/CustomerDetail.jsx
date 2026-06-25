@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import BackButton from "../components/BackButton";
-import customersData from "../Data/Customers.json";
+import BackButton from "../../components/BackButton";
+import customersData from "../../Data/Customers.json";
 
 const normalizeCustomer = (item) => ({
   ...item,

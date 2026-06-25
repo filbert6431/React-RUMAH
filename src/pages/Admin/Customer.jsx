@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaSearch, FaFilter, FaCrown } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
-import { customerAPI } from "../Services/customer";
-import CustomerTable from "../components/CustomerTable";
+import { customerAPI } from "../../Services/customer";
+import CustomerTable from "../../components/Admin/CustomerTable";
 
 export default function Customer() {
   const [customers, setCustomers] = useState([]);

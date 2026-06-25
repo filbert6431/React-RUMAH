@@ -10,16 +10,6 @@
         "name": "Cappuccino",
         "qty": 2,
         "price": 28000
-      },
-      {
-        "name": "Caffe Latte",
-        "qty": 2,
-        "price": 28000
-      },
-      {
-        "name": "Earl Grey Tea",
-        "qty": 1,
-        "price": 18000
       }
     ],
     "order_date": "2024-04-15"

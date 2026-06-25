@@ -1,6 +1,6 @@
 import { FaPlus, FaTrash } from "react-icons/fa";
-import products from "../Data/Products.json";
-import { emptyOrderItem, formatRupiah, getOrderTotal } from "../lib/orderUtils";
+import products from "../../Data/Products.json";
+import { emptyOrderItem, formatRupiah, getOrderTotal } from "../../lib/orderUtils";
 
 export default function OrderForm({
   dataForm,

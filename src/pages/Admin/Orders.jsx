@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaSearch, FaFilter, FaHistory, FaCoffee } from "react-icons/fa";
-import OrdersTable from "../components/OrdersTable";
-import { ordersAPI } from "../Services/Orders";
-import { getOrderTotal } from "../lib/orderUtils";
+import OrdersTable from "../../components/Admin/OrdersTable";
+import { ordersAPI } from "../../Services/Orders";
+import { getOrderTotal } from "../../lib/orderUtils";
 
 const initialFilterState = {
   searchTerm: "",

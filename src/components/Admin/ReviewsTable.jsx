@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../components/ui/button";
+import { Button } from "../ui/button";
 import { FaStar } from "react-icons/fa";
 
 export default function ReviewsTable({ filteredReviews }) {

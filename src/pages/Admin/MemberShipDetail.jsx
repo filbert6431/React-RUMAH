@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import BackButton from "../components/BackButton";
+import BackButton from "../../components/BackButton";
 import MembershipHeader from "../components/MembershipHeader";
 import MembershipLayout from "../components/MembershipLayout";
 
-import customersData from "../Data/Customers.json";
+import customersData from "../../Data/Customers.json";
 
 export default function MemberShipDetail() {
   const { id } = useParams();

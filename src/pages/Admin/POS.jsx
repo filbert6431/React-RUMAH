@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { FaCashRegister, FaShoppingCart, FaStar } from "react-icons/fa";
-import OrderPanel from "../components/OrderPanel";
-import localProducts from "../Data/Products.json";
-import { ordersAPI } from "../Services/Orders";
-import { productsAPI } from "../Services/Products";
+import OrderPanel from "../../components/Admin/OrderPanel";
+import localProducts from "../../Data/Products.json";
+import { ordersAPI } from "../../Services/Orders";
+import { productsAPI } from "../../Services/Products";
 
 const sizes = ["S", "M", "L"];
 const JSON_SERVER_ORDERS_URL = "http://localhost:3000/orders";

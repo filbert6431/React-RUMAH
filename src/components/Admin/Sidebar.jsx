@@ -57,7 +57,7 @@ export default function Sidebar() {
           <nav className="flex flex-col gap-2 w-full px-3">
 
             {/* --- MENU UTAMA --- */}
-            <SidebarItem to="/" label="Dashboard" icon={HiHome} isExpanded={isExpanded} />
+            <SidebarItem to="/dashboard" label="Dashboard" icon={HiHome} isExpanded={isExpanded} />
             <SidebarItem to="/pos" label="POS" icon={FaCashRegister} isExpanded={isExpanded} />
             <SidebarItem to="/orders" label="Orders" icon={HiMenu} isExpanded={isExpanded} />
             <SidebarItem to="/Customer" label="Customers" icon={BsFillPersonVcardFill} isExpanded={isExpanded} />

@@ -15,6 +15,18 @@ export const customerAPI = {
         return response.data
     },
 
+    async findMember(customerId, email) {
+        const safeCustomerId = encodeURIComponent(customerId)
+        const safeEmail = encodeURIComponent(email)
+
+        const response = await axios.get(
+            `${API_URL}?customer_id=eq.${safeCustomerId}&Email=eq.${safeEmail}&limit=1`,
+            { headers }
+        )
+
+        return response.data[0]
+    },
+
     async createCustomer(data) {
         const response = await axios.post(API_URL, data, { headers })
         return response.data

@@ -26,7 +26,7 @@ import {
   FaUsers,
   FaWallet,
 } from "react-icons/fa";
-import { dashboardDataAPI } from "../Services/dashboardData";
+import { dashboardDataAPI } from "../../Services/dashboardData";
 import {
   formatRupiahCompact,
   getAverageRating,
@@ -42,7 +42,7 @@ import {
   getStockChartData,
   getTotalPromoClaims,
   getTotalRevenue,
-} from "../lib/dashboardAnalytics";
+} from "../../lib/dashboardAnalytics";
 
 const chartColors = ["#D4A373", "#7FB069", "#6EA8FE", "#F4A261", "#E76F51", "#B388EB"];
 

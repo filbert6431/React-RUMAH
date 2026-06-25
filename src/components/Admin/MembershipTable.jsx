@@ -1,7 +1,7 @@
 import { FaGem, FaMedal, FaChevronRight, FaUserShield } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Button } from "../components/ui/button";
+import { Button } from "../ui/button";
 
 
 export default function MembershipTable({ filteredMembers }) {

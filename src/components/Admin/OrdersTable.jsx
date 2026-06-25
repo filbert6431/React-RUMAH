@@ -1,7 +1,7 @@
 import { FaCoffee, FaUserCircle } from "react-icons/fa";
 import { useState } from "react";
-import { Button } from "../components/ui/button";
-import { formatRupiah, getOrderTotal } from "../lib/orderUtils";
+import { Button } from "../ui/button";
+import { formatRupiah, getOrderTotal } from "../../lib/orderUtils";
 
 export default function OrdersTable({ filteredOrders, onEdit, onDelete }) {
 

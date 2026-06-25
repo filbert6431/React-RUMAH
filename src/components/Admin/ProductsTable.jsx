@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../components/ui/button";
+import { Button } from "../ui/button";
 
 export default function ProductsTable({ filteredProducts }) {
   const [page, setPage] = useState(1);

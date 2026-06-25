@@ -40,7 +40,7 @@ export default function Login() {
       }
 
       localStorage.setItem("staffUser", JSON.stringify(matchedStaff));
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Authentication Failed");
     } finally {

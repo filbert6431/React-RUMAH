@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
+import Sidebar from "../components/Admin/Sidebar";
+import Header from "../components/Admin/Header";
 
 export default function AdminLayout() {
   return (
     /* Menggunakan #3D2B1F (Warm Chocolate) yang lebih terang dan hidup */
-    <div className="flex h-screen w-full bg-[#3D2B1F] overflow-hidden font-barlow relative">
+    <div className="flex h-screen w-full bg-[#3d2b1f] overflow-hidden font-barlow relative">
       
       {/* Overlay tekstur kayu/grainy halus agar tidak flat */}
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/pinstripe.png')]"></div>

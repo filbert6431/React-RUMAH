@@ -1,8 +1,8 @@
-import customersData from "../Data/Customers.json";
+import customersData from "../../Data/Customers.json";
 import { FaUserPlus, FaGem, FaMedal, FaSearch, FaFilter, FaCrown, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Pastikan sudah install react-router-dom
-import MembershipTable from "../components/MembershipTable";
+import MembershipTable from "../../components/Admin/MembershipTable";
 
 export default function Membership() {
   const [dataForm, setDataForm] = useState({
