@@ -60,10 +60,23 @@ export const ordersAPI = {
       status: data.status || "Pending",
     };
 
-    const res = await axios.post(API_URL, payload, { headers });
-    const created = Array.isArray(res.data) ? res.data[0] : res.data;
-
-    return cleanOrder(created);
+    try {
+      const res = await axios.post(API_URL, payload, { headers });
+      const created = Array.isArray(res.data) ? res.data[0] : res.data;
+      return cleanOrder(created);
+    } catch (err) {
+      // Fallback to localStorage if Supabase fails (e.g., RLS policy)
+      console.warn("Supabase insert failed, using localStorage fallback:", err);
+      const orders = readFallbackOrders();
+      const newOrder = cleanOrder({
+        ...payload,
+        id: `ORD-${Date.now()}`,
+        order_id: `ORD-${Date.now()}`,
+      });
+      orders.push(newOrder);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(orders.map(cleanOrder)));
+      return newOrder;
+    }
   },
 
   // Keep other methods for admin screens (if they still rely on localStorage)

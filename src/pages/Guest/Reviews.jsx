@@ -37,6 +37,7 @@ export default function Reviews() {
       const data = await reviewsAPI.fetchReviews();
       setReviews(Array.isArray(data) ? data : []);
     } catch (e) {
+      console.error("Fetch reviews error:", e);
       setError("Gagal memuat ulasan. Silakan coba lagi.");
       setReviews([]);
     } finally {
@@ -53,11 +54,11 @@ export default function Reviews() {
     setSubmitSuccess("");
     setSubmitError("");
     try {
+      // Match Supabase column names - only use columns that exist in the table
       const payload = {
-        customer_name: nama,
+        customer_id: nama || "Guest",
         star_review: Number(rating),
         review_text: safeText(ulasan),
-        tanggal_review: new Date().toISOString(),
       };
 
       await reviewsAPI.createReview(payload);

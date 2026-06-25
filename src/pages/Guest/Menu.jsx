@@ -218,10 +218,21 @@ export default function Menu() {
           ) : (
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {normalizedProducts.map((p) => {
+                // Supabase can store image paths in multiple formats:
+                // - full URL (http...)
+                // - relative path like "public/images/xxx.jpg" or "/images/xxx.jpg"
+                // Normalize to a usable src.
                 const img = p.image_url
                   ? p.image_url.startsWith("http")
                     ? p.image_url
-                    : `/${String(p.image_url).replace(/^\//, "")}`
+                    : (() => {
+                        const s = String(p.image_url).trim();
+                        // remove leading public/
+                        const withoutPublic = s.replace(/^public\//, "").replace(/^public\\/, "");
+                        // ensure leading slash
+                        const normalized = withoutPublic.startsWith("/") ? withoutPublic : `/${withoutPublic}`;
+                        return normalized;
+                      })()
                   : "";
 
                 return (
