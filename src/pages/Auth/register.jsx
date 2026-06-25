@@ -5,7 +5,8 @@ import { staffAPI } from "../../Services/Staff";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [_, setLoading] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [dataForm, setDataForm] = useState({

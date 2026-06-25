@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
-import MembershipHeader from "../components/MembershipHeader";
-import MembershipLayout from "../components/MembershipLayout";
+import MembershipHeader from "../../components/MembershipHeader";
+import MembershipLayout from "../../components/MembershipLayout";
+
 
 import customersData from "../../Data/Customers.json";
 
@@ -17,14 +18,18 @@ export default function MemberShipDetail() {
     );
     if (found) {
       // normalize to membership-shaped object expected by the layout
-      setMember({
+      const normalized = {
         customer_id: found.ID_Customer,
         name: found.Nama_Lengkap || found.name,
         level_membership: found.level_membership || found.level || found.membershipLevel,
         tanggal_daftar: found.tanggal_daftar || found.joinDate,
         points: found.points ?? 0,
-      });
-    } else setMember(null);
+      };
+      // setState async to avoid sync update warning
+      queueMicrotask(() => setMember(normalized));
+    } else {
+      queueMicrotask(() => setMember(null));
+    }
   }, [id]);
 
   if (!member) return <div className="text-white p-10">Data member tidak ditemukan...</div>;

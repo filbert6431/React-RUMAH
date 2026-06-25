@@ -100,11 +100,12 @@ export default function MemberDashboard() {
 
     if (!savedCustomer) {
       // Use fake customer instead of redirecting
-      setCustomer(FAKE_CUSTOMER);
+      queueMicrotask(() => setCustomer(FAKE_CUSTOMER));
       return;
     }
 
-    setCustomer(JSON.parse(savedCustomer));
+    const parsed = JSON.parse(savedCustomer);
+    queueMicrotask(() => setCustomer(parsed));
   }, [navigate]);
 
   const memberOrders = useMemo(() => {

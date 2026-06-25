@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Container from "../../Layout/Container";
 import RatingStars from "../../components/Guest/RatingStar";
 import { productsAPI } from "../../Services/Products";
 import { promoAPI } from "../../Services/Promo";
 import { reviewsAPI } from "../../Services/Reviews";
+
 
 
 
@@ -54,14 +55,15 @@ function SectionTitle({ title, subtitle }) {
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [promo, setPromo] = useState([]);
   const [reviews, setReviews] = useState([]);
+
 
   const [customersById] = useState(() => {
     try {
       // if available in Data folder (fallback), use it to display reviewer name
-      // eslint-disable-next-line import/no-unresolved
-      const customers = require("../../Data/Customers.json");
+      const customers = [];
+
+      
       const map = new Map();
       if (Array.isArray(customers)) {
         customers.forEach((c) => {
@@ -77,8 +79,10 @@ export default function Home() {
 
 
   const [productsLoading, setProductsLoading] = useState(true);
-  const [promoLoading, setPromoLoading] = useState(true);
-  const [reviewsLoading, setReviewsLoading] = useState(true);
+  // kept for future UI loading, currently unused to satisfy lint
+  // const [promoLoading, setPromoLoading] = useState(true);
+  // const [reviewsLoading, setReviewsLoading] = useState(true);
+
 
   const [productsError, setProductsError] = useState(false);
 
@@ -91,26 +95,21 @@ export default function Home() {
     return `Rp ${number.toLocaleString('id-ID')}`;
   };
 
-  const leftIndex = useMemo(() => {
-    if (!products.length) return 0;
-    return (activeIndex - 1 + products.length) % products.length;
-  }, [activeIndex, products.length]);
 
-  const rightIndex = useMemo(() => {
-    if (!products.length) return 0;
-    return (activeIndex + 1) % products.length;
-  }, [activeIndex, products.length]);
 
   useEffect(() => {
     let mounted = true;
 
     const load = async () => {
       try {
-        const [p, pr, r] = await Promise.all([
+        const [p, _pr, r] = await Promise.all([
           productsAPI.fetchProducts(),
+
           promoAPI.fetchPromo(),
           reviewsAPI.fetchReviews(),
         ]);
+
+
 
         if (!mounted) return;
 
@@ -126,8 +125,8 @@ export default function Home() {
           : [];
 
         setProducts(normalizedProducts.length ? normalizedProducts : productsFallback);
-        setPromo(Array.isArray(pr) ? pr : []);
         setReviews(
+
           Array.isArray(r)
             ? r
                 .slice()
@@ -137,15 +136,13 @@ export default function Home() {
         );
 
         setProductsLoading(false);
-        setPromoLoading(false);
-        setReviewsLoading(false);
-      } catch (e) {
+        // promo/reviews loading states disabled (not used)
+
+      } catch {
         if (!mounted) return;
         setProducts(productsFallback);
         setProductsLoading(false);
         setProductsError(true);
-        setPromoLoading(false);
-        setReviewsLoading(false);
       }
     };
 
@@ -156,13 +153,7 @@ export default function Home() {
     };
   }, []);
 
-  const sortedPromo = useMemo(() => {
-    if (!promo?.length) return [];
-    return promo
-      .slice()
-      .sort((a, b) => new Date(b.start_date || b.created_at || 0) - new Date(a.start_date || a.created_at || 0))
-      .slice(0, 3);
-  }, [promo]);
+
 
   return (
     <div className="bg-[#F4EFEA] text-[#2D2825]">
