@@ -19,6 +19,12 @@ export const productsAPI = {
         const response = await axios.post(API_URL, data, { headers })
         return response.data
     },
+
+    async updateProduct(id, data) {
+        const response = await axios.patch(`${API_URL}?product_id=eq.${id}`, data, { headers })
+        return response.data
+    },
+
     async deleteProduct(id) {
         await axios.delete(`${API_URL}?id=eq.${id}`, { headers })
     }

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import promoFallbackData from "../../Data/Promo.json";
 import Container from "../../Layout/Container";
+import Button from "../../components/Guest/Button";
 import RatingStars from "../../components/Guest/RatingStar";
 import { productsAPI } from "../../Services/Products";
 import { promoAPI } from "../../Services/Promo";
@@ -56,7 +58,9 @@ function SectionTitle({ title, subtitle }) {
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [reviews, setReviews] = useState([]);
-
+  const [promos, setPromos] = useState([]);
+  const [promosLoading, setPromosLoading] = useState(true);
+  const [promosError, setPromosError] = useState(false);
 
   const [customersById] = useState(() => {
     try {
@@ -95,25 +99,62 @@ export default function Home() {
     return `Rp ${number.toLocaleString('id-ID')}`;
   };
 
+  const formatDate = (value) => {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(date);
+  };
 
+  const handleClaimPromo = async (promoId) => {
+    const targetPromo = promos.find((promo) => promo.promo_id === promoId);
+    if (!targetPromo) return;
+
+    const currentClaimCount = Number(targetPromo.claim_count ?? 0);
+    const claimLimit = Number(targetPromo.claim_limit ?? 0);
+
+    if (currentClaimCount >= claimLimit) return;
+
+    const nextClaimCount = currentClaimCount + 1;
+
+    setPromos((currentPromos) =>
+      currentPromos.map((promo) =>
+        promo.promo_id === promoId
+          ? { ...promo, claim_count: nextClaimCount }
+          : promo
+      )
+    );
+
+    try {
+      await promoAPI.updatePromo(promoId, { claim_count: nextClaimCount });
+    } catch {
+      setPromos((currentPromos) =>
+        currentPromos.map((promo) =>
+          promo.promo_id === promoId
+            ? { ...promo, claim_count: currentClaimCount }
+            : promo
+        )
+      );
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
 
     const load = async () => {
       try {
-        const [p, _pr, r] = await Promise.all([
+        const [p, promoResult, r] = await Promise.all([
           productsAPI.fetchProducts(),
-
           promoAPI.fetchPromo(),
           reviewsAPI.fetchReviews(),
         ]);
 
-
-
         if (!mounted) return;
 
-        // normalize shape (Supabase returns column names)
         const normalizedProducts = Array.isArray(p)
           ? p.map((x) => ({
               product_id: x.product_id,
@@ -124,9 +165,19 @@ export default function Home() {
             }))
           : [];
 
-        setProducts(normalizedProducts.length ? normalizedProducts : productsFallback);
-        setReviews(
+        const normalizedPromos = Array.isArray(promoResult)
+          ? promoResult.map((promo) => ({
+              ...promo,
+              promo_id: promo.promo_id ?? promo.id,
+              claim_count: Number(promo.claim_count ?? 0),
+              claim_limit: Number(promo.claim_limit ?? 0),
+              discount: Number(promo.discount ?? 0),
+            }))
+          : [];
 
+        setProducts(normalizedProducts.length ? normalizedProducts : productsFallback);
+        setPromos(normalizedPromos.length ? normalizedPromos : promoFallbackData);
+        setReviews(
           Array.isArray(r)
             ? r
                 .slice()
@@ -136,13 +187,15 @@ export default function Home() {
         );
 
         setProductsLoading(false);
-        // promo/reviews loading states disabled (not used)
-
+        setPromosLoading(false);
       } catch {
         if (!mounted) return;
         setProducts(productsFallback);
+        setPromos(promoFallbackData);
         setProductsLoading(false);
+        setPromosLoading(false);
         setProductsError(true);
+        setPromosError(true);
       }
     };
 
@@ -201,6 +254,90 @@ export default function Home() {
       </section>
 
       {/* Area Middle (Value & Trust Section) */}
+
+      <section id="promotions" className="mx-auto max-w-7xl px-6 py-16 md:px-10 lg:px-16">
+        <SectionTitle
+          title="Promo Tersedia"
+          subtitle="Pilih promo yang sedang aktif dan klaim sekarang sebelum kuota penuh."
+        />
+
+        {promosLoading && (
+          <div className="flex items-center justify-center rounded-3xl border border-white/70 bg-white/80 p-8">
+            <p className="text-[#2D2825]/70">Memuat promo...</p>
+          </div>
+        )}
+
+        {!promosLoading && promosError && (
+          <div className="flex items-center justify-center rounded-3xl border border-white/70 bg-white/80 p-8">
+            <p className="text-[#2D2825]/70">Promo saat ini tidak tersedia.</p>
+          </div>
+        )}
+
+        {!promosLoading && !promosError && promos.length === 0 && (
+          <div className="flex items-center justify-center rounded-3xl border border-white/70 bg-white/80 p-8">
+            <p className="text-[#2D2825]/70">Belum ada promo yang tersedia.</p>
+          </div>
+        )}
+
+        {!promosLoading && !promosError && promos.length > 0 && (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {promos.map((promo) => {
+              const isFull = Number(promo.claim_count ?? 0) >= Number(promo.claim_limit ?? 0);
+              const isInactive = String(promo.status_promo || "").toLowerCase() === "tidak aktif";
+              const isDisabled = isInactive || isFull;
+              const claimLabel = isInactive ? "Promo Tidak Aktif" : isFull ? "Kuota Penuh" : "Claim Promo";
+
+              return (
+                <div
+                  key={promo.promo_id ?? promo.id}
+                  className="overflow-hidden rounded-3xl border border-white/70 bg-white shadow-md"
+                >
+                  <div className="bg-[#967259] p-6 text-white">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]">
+                        {promo.status_promo || "Aktif"}
+                      </span>
+                      <span className="text-2xl font-black">{promo.discount ?? 0}%</span>
+                    </div>
+                    <h3 className="mt-4 text-2xl font-black">{promo.nama_promo}</h3>
+                    <p className="mt-2 text-sm text-white/80">
+                      Diskon hingga {promo.discount ?? 0}% untuk pelanggan setia.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 p-6">
+                    <div className="flex items-center justify-between text-sm text-[#2D2825]/70">
+                      <span>Periode</span>
+                      <span className="font-semibold text-[#2D2825]">
+                        {formatDate(promo.start_date)} - {formatDate(promo.end_date)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm text-[#2D2825]/70">
+                      <span>Claim</span>
+                      <span className="font-semibold text-[#2D2825]">
+                        {promo.claim_count ?? 0}/{promo.claim_limit ?? 0}
+                      </span>
+                    </div>
+
+                    <Button
+                      onClick={() => {
+                        if (!isDisabled) {
+                          handleClaimPromo(promo.promo_id ?? promo.id);
+                        }
+                      }}
+                      variant={isDisabled ? "secondary" : "primary"}
+                      className={`w-full ${isDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+                    >
+                      {claimLabel}
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       {/* Section 2 - About Company */}
       <section className="py-16">

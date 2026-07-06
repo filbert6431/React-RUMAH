@@ -1,13 +1,68 @@
-import products from "../../Data/Products.json";
+import initialProducts from "../../Data/Products.json";
 import { FaSearch, FaFilter, FaShoppingBag } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductsTable from "../../components/Admin/ProductsTable";
 
+const STORAGE_KEY = "rumah-products-data";
+
+const normalizeProductForTable = (product, index) => ({
+  product_id: product.product_id || product.id || `CF${String(index + 1).padStart(3, "0")}`,
+  nama_product: product.nama_product || product.name || "Produk",
+  kategori: product.kategori || product.category || "Coffee",
+  stock: Number(product.stock ?? product.stok ?? 0),
+  harga_product: Number(product.harga_product ?? product.price ?? 0),
+  image_url: product.image_url || product.image || product.img || "",
+});
+
 export default function Products() {
+  const [products, setProducts] = useState(() => {
+    if (typeof window === "undefined") {
+      return initialProducts.map(normalizeProductForTable);
+    }
+
+    try {
+      const storedProducts = window.localStorage.getItem(STORAGE_KEY);
+      if (storedProducts) {
+        const parsedProducts = JSON.parse(storedProducts);
+        return Array.isArray(parsedProducts)
+          ? parsedProducts.map(normalizeProductForTable)
+          : initialProducts.map(normalizeProductForTable);
+      }
+    } catch {
+      // fallback below
+    }
+
+    return initialProducts.map(normalizeProductForTable);
+  });
   const [dataForm, setDataForm] = useState({
     searchTerm: "",
     selectedCategory: "",
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const storedProducts = window.localStorage.getItem(STORAGE_KEY);
+      if (storedProducts) {
+        const parsedProducts = JSON.parse(storedProducts);
+        setProducts(Array.isArray(parsedProducts) ? parsedProducts.map(normalizeProductForTable) : []);
+      } else {
+        const initialData = initialProducts.map(normalizeProductForTable);
+        setProducts(initialData);
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+      }
+    } catch {
+      const initialData = initialProducts.map(normalizeProductForTable);
+      setProducts(initialData);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+  }, [products]);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;

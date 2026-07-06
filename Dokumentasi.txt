@@ -1,0 +1,580 @@
+Project ini adalah aplikasi web React + Vite untuk coffee shop yang menggabungkan dua sisi utama:
+
+- sisi pelanggan/guest untuk melihat menu, promo, ulasan, dan informasi brand;
+- sisi admin untuk mengelola dashboard, produk, order, POS, promo, customer, staff, dan membership.
+
+Aplikasi ini dibangun dengan React 19, React Router, Tailwind CSS, dan memanfaatkan Supabase REST API sebagai sumber data utama. Untuk kebutuhan fallback, beberapa bagian juga memakai localStorage.
+
+---
+
+## 1. Ringkasan Proyek
+
+RUMAH adalah aplikasi digital coffee shop yang menggabungkan pengalaman pelanggan dengan operasi admin. Tujuan utamanya adalah menyediakan antarmuka modern untuk:
+
+- menampilkan produk dan promo secara menarik;
+- mengelola penjualan melalui POS;
+- melihat ringkasan bisnis di dashboard admin;
+- mengelola order, produk, pelanggan, staff, dan review.
+
+Aplikasi ini cocok untuk bisnis coffee shop yang ingin mengelola operasional harian secara sederhana namun tetap terstruktur.
+
+---
+
+## 2. Teknologi yang Digunakan
+
+- React 19
+- Vite 8
+- React Router DOM
+- Tailwind CSS
+- Axios
+- Recharts
+- React Icons
+- lucide-react
+- Supabase REST API
+- localStorage sebagai fallback data
+
+---
+
+## 3. Struktur Folder Utama
+
+\`\`\`text
+src/
+  App.jsx
+  main.jsx
+  assets/
+  components/
+    Admin/
+    Guest/
+    ui/
+  Data/
+  Layout/
+  lib/
+  pages/
+    Admin/
+    Auth/
+    Guest/
+    Member/
+  Services/
+  laporan_rumah_1/
+  laporan_rumah_2/
+  laporan_rumah_3/
+\`\`\`
+
+---
+
+## 4. Arsitektur Aplikasi
+
+### 4.1 Entry Point
+
+- src/main.jsx adalah file bootstrap aplikasi.
+- File ini menginisialisasi React, Router, dan render aplikasi ke DOM.
+
+### 4.2 Routing
+
+- src/App.jsx mengatur router utama aplikasi.
+- Aplikasi dibagi menjadi beberapa area:
+  - Area Admin
+  - Area Auth
+  - Area Guest
+  - Area Member
+
+### 4.3 Layout
+
+- src/Layout/AdminLayout.jsx untuk tampilan panel admin.
+- src/Layout/GuestLayout.jsx untuk tampilan halaman pelanggan.
+- src/Layout/AuthLayout.jsx untuk tampilan login/register.
+- src/Layout/Container.jsx untuk wrapper layout umum.
+
+---
+
+## 5. Fitur Utama
+
+### 5.1 Guest / Customer View
+
+Halaman pelanggan mencakup:
+
+- landing page home;
+- menu produk;
+- halaman about us;
+- review pelanggan;
+- kontak;
+- promo yang dapat diklaim.
+
+### 5.2 Admin Dashboard
+
+Admin dapat mengakses:
+
+- dashboard ringkasan performa bisnis;
+- halaman POS untuk membuat order cepat;
+- daftar order;
+- detail order;
+- data produk dan stok;
+- data promo;
+- data customer;
+- data staff;
+- data membership;
+- review pelanggan.
+
+### 5.3 POS & Checkout
+
+- pengguna admin dapat menambahkan item ke keranjang;
+- checkout menghasilkan order baru;
+- stok produk akan berkurang otomatis setelah checkout berhasil;
+- data stok diperbarui ke state dan juga ke sumber data yang dipakai halaman produk.
+
+### 5.4 Promo Claim
+
+- promo ditampilkan di halaman home;
+- tombol claim aktif hanya jika promo masih aktif dan kuota belum penuh;
+- jika status promo adalah "Tidak Aktif" atau kuota penuh, tombol tidak bisa diklaim.
+
+---
+
+## 6. Penjelasan Struktur Folder
+
+### 6.1 Folder src/pages
+
+#### Admin Pages
+
+- src/pages/Admin/Dashboard.jsx
+  Halaman ringkasan bisnis menggunakan data analitik dan chart.
+
+- src/pages/Admin/POS.jsx
+  Halaman kasir / point of sale untuk membuat order dan mengurangi stok.
+
+- src/pages/Admin/Orders.jsx
+  Menampilkan daftar semua order.
+
+- src/pages/Admin/OrdersDetail.jsx
+  Menampilkan detail order tertentu.
+
+- src/pages/Admin/Products.jsx
+  Menampilkan tabel produk dan stok.
+
+- src/pages/Admin/Promo.jsx
+  Halaman manajemen promo.
+
+- src/pages/Admin/Customer.jsx
+  Halaman daftar customer.
+
+- src/pages/Admin/CustomerDetail.jsx
+  Detail customer.
+
+- src/pages/Admin/Staff.jsx
+  Manajemen data staff.
+
+- src/pages/Admin/Membership.jsx
+  Halaman membership.
+
+- src/pages/Admin/MemberShipDetail.jsx
+  Detail membership.
+
+- src/pages/Admin/Reviews.jsx
+  Halaman review pelanggan.
+
+- src/pages/Admin/ErrorPage.jsx
+  Halaman error untuk routing.
+
+#### Guest Pages
+
+- src/pages/Guest/Home.jsx
+  Halaman utama guest, menampilkan hero section, promo, produk, dan testimonial.
+
+- src/pages/Guest/Menu.jsx
+  Halaman menu menu.
+
+- src/pages/Guest/AboutUs.jsx
+  Halaman tentang brand.
+
+- src/pages/Guest/ContactUs.jsx
+  Halaman kontak.
+
+- src/pages/Guest/Reviews.jsx
+  Halaman review guest.
+
+#### Auth Pages
+
+- src/pages/Auth/Halaman_login.jsx
+  Halaman login admin.
+
+- src/pages/Auth/register.jsx
+  Halaman registrasi.
+
+#### Member Pages
+
+- src/pages/Member/MemberLogin.jsx
+  Halaman login member.
+
+- src/pages/Member/MemberDashboard.jsx
+  Dashboard member.
+
+---
+
+### 6.2 Folder src/components
+
+#### Admin Components
+
+- src/components/Admin/Header.jsx
+  Header panel admin.
+
+- src/components/Admin/Sidebar.jsx
+  Navigasi sidebar admin.
+
+- src/components/Admin/Footer.jsx
+  Footer admin.
+
+- src/components/Admin/OrderPanel.jsx
+  Panel keranjang order di POS.
+
+- src/components/Admin/OrderForm.jsx
+  Form untuk membuat order.
+
+- src/components/Admin/OrdersTable.jsx
+  Tabel daftar order.
+
+- src/components/Admin/ProductsTable.jsx
+  Tabel daftar produk dan stok.
+
+- src/components/Admin/CustomerTable.jsx
+  Tabel customer.
+
+- src/components/Admin/StaffTable.jsx
+  Tabel staff.
+
+- src/components/Admin/MembershipTable.jsx
+  Tabel membership.
+
+- src/components/Admin/ReviewsTable.jsx
+  Tabel review.
+
+- src/components/Admin/OrderDetailLayout.jsx
+  Layout detail order.
+
+- src/components/Admin/OrderHeader.jsx
+  Header detail order.
+
+#### Guest Components
+
+- src/components/Guest/Header.jsx
+  Header halaman guest.
+
+- src/components/Guest/Footer.jsx
+  Footer halaman guest.
+
+- src/components/Guest/Button.jsx
+  Tombol UI reusable.
+
+- src/components/Guest/CartButton.jsx
+  Tombol cart.
+
+- src/components/Guest/CartSidebar.jsx
+  Sidebar keranjang belanja.
+
+- src/components/Guest/MenuCard.jsx
+  Card produk di halaman menu.
+
+- src/components/Guest/PageBanner.jsx
+  Banner halaman.
+
+- src/components/Guest/ProductReview.jsx
+  Komponen review produk.
+
+- src/components/Guest/PromoCard.jsx
+  Kartu promo.
+
+- src/components/Guest/RatingStar.jsx
+  Komponen rating bintang.
+
+- src/components/Guest/Review.jsx
+  Kartu ulasan pelanggan.
+
+#### UI Components
+
+- src/components/ui/button.jsx
+  Komponen tombol desain sistem.
+
+- src/components/ui/dropdown-menu.jsx
+  Komponen dropdown.
+
+- src/components/ui/separator.jsx
+  Separator UI.
+
+- src/components/ui/tooltip.jsx
+  Tooltip UI.
+
+---
+
+### 6.3 Folder src/Services
+
+Folder ini berisi layer komunikasi data ke API.
+
+- src/Services/Products.js
+  Mengambil data produk dari Supabase dan menyediakan update stok.
+
+- src/Services/Orders.js
+  Mengambil dan menyimpan order, termasuk fallback ke localStorage.
+
+- src/Services/Promo.js
+  Mengelola data promo.
+
+- src/Services/Reviews.js
+  Mengambil data review.
+
+- src/Services/Staff.js
+  Mengambil data staff.
+
+- src/Services/customer.js
+  Mengambil data customer.
+
+- src/Services/dashboardData.js
+  Menyediakan data dashboard analitik.
+
+---
+
+### 6.4 Folder src/lib
+
+- src/lib/dashboardAnalytics.js
+  Fungsi untuk menganalisis data dashboard.
+
+- src/lib/orderUtils.js
+  Helper untuk memproses order dan subtotal.
+
+- src/lib/utils.js
+  Utility helper umum.
+
+---
+
+### 6.5 Folder src/Data
+
+Folder ini berisi data JSON sebagai sumber data lokal.
+
+- src/Data/Products.json
+  Data produk awal.
+
+- src/Data/Orders.json
+  Seed data order.
+
+- src/Data/Promo.json
+  Data promo awal.
+
+- src/Data/Reviews.json
+  Data review awal.
+
+- src/Data/Customers.json
+  Data customer awal.
+
+- src/Data/Staff.json
+  Data staff awal.
+
+---
+
+## 7. Alur Data Aplikasi
+
+### 7.1 Data dari API
+
+Beberapa halaman mengambil data melalui service di src/Services:
+
+- Produk diproses oleh src/Services/Products.js
+- Order diproses oleh src/Services/Orders.js
+- Promo diproses oleh src/Services/Promo.js
+
+### 7.2 Fallback ke localStorage
+
+Jika API tidak tersedia atau gagal, aplikasi memakai fallback dari localStorage dan data JSON untuk menjaga kelancaran UI.
+
+### 7.3 Alur Checkout POS
+
+1. Admin menambah item ke keranjang di POS.
+2. Saat checkout diproses, order dibuat.
+3. Stok tiap produk yang dibeli dikurangi.
+4. Perubahan stok disimpan ke state dan sumber data yang dipakai halaman produk.
+
+### 7.4 Alur Promo Claim
+
+1. Data promo diambil dari API atau JSON.
+2. Promo ditampilkan di halaman home.
+3. Saat tombol claim ditekan, sistem mengecek apakah promo aktif dan apakah kuota masih tersedia.
+4. Jika valid, claim_count bertambah.
+
+### 7.5 Pola Logika Serupa Antar Halaman
+
+Beberapa pola logika muncul berulang di banyak halaman dan penting dipahami agar pengembangan lebih konsisten:
+
+- Normalisasi data (normalized data)
+  Data dari Supabase, JSON, atau localStorage sering dikonversi dulu ke format frontend yang seragam sebelum dipakai di UI. Contohnya produk diubah menjadi struktur dengan field seperti product_id, nama_product, harga_product, stock, dan image_url agar halaman admin maupun guest bisa membacanya dengan cara yang sama.
+
+- Pola loading, error, dan fallback
+  Hampir semua halaman yang mengambil data memakai pola state loading, state error, dan fallback data. Ini membuat UI tetap aman jika API sedang tidak tersedia.
+
+- Pemisahan logic ke Services dan Helpers
+  Logika request API tidak diletakkan langsung di page yang terlalu besar. Sebagian besar dipindah ke folder Services, sedangkan helper seperti perhitungan order dan analytics diletakkan di folder lib.
+
+- Sinkronisasi data antar halaman
+  Ada beberapa fitur yang memerlukan data yang sama antar halaman, misalnya stok produk yang dipakai di POS dan di tabel produk admin. Untuk itu, digunakan penyimpanan lokal dan state yang disinkronkan agar perubahan di satu halaman terlihat di halaman lain.
+
+- Pola state dan UI yang konsisten
+  Halaman seperti Home, Menu, POS, dan Products memakai pola yang sama: data diambil saat komponen pertama kali dimuat, lalu diproses ke state, dan ditampilkan ke UI melalui komponen reusable.
+
+- Shared business rules
+  Aturan bisnis seperti promo claim, pembatasan tombol, pengurangan stok, dan kalkulasi total order diterapkan di level halaman atau service agar logika tetap konsisten di seluruh aplikasi.
+
+#### Contoh implementasi pola-pola tersebut
+
+1. Normalisasi data
+
+```jsx
+const normalizeProduct = (product) => ({
+  product_id: product.product_id || product.id,
+  nama_product: product.nama_product || product.name,
+  harga_product: Number(product.harga_product || product.price || 0),
+  stock: Number(product.stock ?? product.stok ?? 0),
+  image_url: product.image_url || product.image || "",
+});
+```
+
+Contoh ini dipakai di halaman POS dan halaman produk agar data API dan JSON dapat dipakai dengan format yang sama.
+
+2. Pola loading, error, dan fallback
+
+```jsx
+const [products, setProducts] = useState([]);
+const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+  const loadProducts = async () => {
+    try {
+      const data = await productsAPI.fetchProducts();
+      setProducts(data);
+    } catch {
+      setProducts(localProducts);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  loadProducts();
+}, []);
+```
+
+Pola ini terlihat di halaman seperti POS dan Home ketika data API sedang tidak tersedia.
+
+3. Pemisahan logic ke Services
+
+```js
+export const productsAPI = {
+  async fetchProducts() {
+    const response = await axios.get(API_URL, { headers });
+    return response.data;
+  },
+
+  async updateProduct(id, data) {
+    const response = await axios.patch(`${API_URL}?product_id=eq.${id}`, data, { headers });
+    return response.data;
+  },
+};
+```
+
+Logika request API dipisahkan ke services supaya halaman tidak dipenuhi kode request yang panjang.
+
+4. Sinkronisasi data antar halaman
+
+```jsx
+setProducts((currentProducts) => {
+  const updatedProducts = currentProducts.map((product) => {
+    if (product.product_id === item.product_id) {
+      return { ...product, stock: product.stock - item.qty };
+    }
+    return product;
+  });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProducts));
+  return updatedProducts;
+});
+```
+
+Kode ini menunjukkan bagaimana perubahan stok dari POS langsung disimpan dan dibagikan ke halaman produk.
+
+5. Shared business rules
+
+```jsx
+const isDisabled = status_promo === "Tidak Aktif" || claim_count >= claim_limit;
+
+<Button onClick={handleClaimPromo} disabled={isDisabled}>
+  {isDisabled ? "Tidak Bisa Diklaim" : "Claim Promo"}
+</Button>
+```
+
+Aturan bisnis seperti promo tidak aktif atau kuota penuh diterapkan di satu tempat sehingga konsisten di seluruh UI.
+
+---
+
+## 8. Panduan Menjalankan Aplikasi
+
+### Install dependency
+
+\`\`\`bash
+npm install
+\`\`\`
+
+### Jalankan development server
+
+\`\`\`bash
+npm run dev
+\`\`\`
+
+### Build untuk production
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+### Preview build
+
+\`\`\`bash
+npm run preview
+\`\`\`
+
+---
+
+## 9. Panduan Kontribusi Developer
+
+### Praktik yang disarankan
+
+- gunakan komponen yang reusable untuk bagian UI yang berulang;
+- simpan logika request API di folder Services;
+- hindari menulis logika bisnis langsung di halaman jika bisa dipisahkan ke helper di folder lib;
+- gunakan data JSON dan localStorage sebagai fallback saat API tidak tersedia.
+
+### Tip struktur pengembangan
+
+- tambahkan halaman baru di folder src/pages;
+- tambahkan komponen UI di folder src/components;
+- tambahkan service API baru di folder src/Services;
+- tambahkan helper util di folder src/lib.
+
+---
+
+## 10. Catatan Tambahan
+
+Project ini juga memuat folder pelajaran:
+
+- src/laporan_rumah_1
+- src/laporan_rumah_2
+- src/laporan_rumah_3
+
+Folder-folder ini kemungkinan berisi eksperimen atau tugas pembelajaran terkait React, komponen, dan UI.
+
+---
+
+## 11. Ringkasan Singkat untuk Tim Pengembang
+
+Aplikasi ini adalah kombinasi antara:
+
+- storefront customer-facing;
+- back-office admin management;
+- POS dan order processing;
+- simple analytics dashboard;
+- data persistence dengan API dan fallback lokal.
+
+Dengan struktur folder yang jelas, project ini cukup modular untuk dikembangkan lebih lanjut, misalnya menambahkan autentikasi yang lebih aman, integrasi payment, fitur cart yang lebih kompleks, atau dashboard real-time.
+' | Set-Content -Path "README.md" -Encoding utf8

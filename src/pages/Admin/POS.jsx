@@ -35,6 +35,7 @@ const normalizeProduct = (product, index) => {
     name,
     category,
     price: Number(product.price || product.harga_product || 0),
+    stock: Number(product.stock ?? product.stok ?? 0),
     image: normalizeImageUrl(product.image_url || product.image || product.img),
     rating: product.rating || "4.8",
     review: product.review || product.reviews || 120 + index * 17,
@@ -58,6 +59,8 @@ const createNextOrderCode = (orders, prefix) => {
   return `${prefix}-${String(nextNumber).padStart(4, "0")}`;
 };
 
+const STORAGE_KEY = "rumah-products-data";
+
 export default function POS() {
   const [products, setProducts] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
@@ -71,10 +74,14 @@ export default function POS() {
       try {
         const fetchedProducts = await productsAPI.fetchProducts();
         const productSource = fetchedProducts.length > 0 ? fetchedProducts : localProducts;
-        setProducts(productSource.map(normalizeProduct));
+        const normalizedProducts = productSource.map(normalizeProduct);
+        setProducts(normalizedProducts);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizedProducts));
       } catch {
         // Fallback sederhana supaya POS tetap bisa dipakai saat API belum aktif.
-        setProducts(localProducts.map(normalizeProduct));
+        const fallbackProducts = localProducts.map(normalizeProduct);
+        setProducts(fallbackProducts);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackProducts));
       } finally {
         setIsLoading(false);
       }
@@ -181,6 +188,37 @@ export default function POS() {
 
       // Tetap simpan lewat service yang sudah dipakai halaman Orders saat ini.
       await ordersAPI.createOrder(newOrder);
+
+      const stockUpdates = cartItems.reduce((updates, item) => {
+        const productToUpdate = products.find((product) => Number(product.product_id) === Number(item.product_id));
+
+        if (!productToUpdate) return updates;
+
+        const currentStock = Number(productToUpdate.stock ?? 0);
+        const nextStock = Math.max(0, currentStock - item.qty);
+
+        updates.push({ productId: Number(item.product_id), nextStock });
+        return updates;
+      }, []);
+
+      await Promise.all(
+        stockUpdates.map(({ productId, nextStock }) => productsAPI.updateProduct(productId, { stock: nextStock }))
+      );
+
+      setProducts((currentProducts) => {
+        const updatedProducts = currentProducts.map((product) => {
+          const matchingUpdate = stockUpdates.find(
+            (update) => Number(product.product_id) === Number(update.productId)
+          );
+
+          if (!matchingUpdate) return product;
+
+          return { ...product, stock: matchingUpdate.nextStock };
+        });
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProducts));
+        return updatedProducts;
+      });
       setCartItems([]);
       setMessage(
         savedToJsonServer
