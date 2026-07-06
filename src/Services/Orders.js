@@ -1,6 +1,5 @@
-import seedOrders from "../Data/Orders.json";
 import { getOrderTotal, removeItemSubtotals } from "../lib/orderUtils";
-
+import seedOrders from "../Data/Orders.json";
 import axios from "axios";
 
 const API_URL = "https://hqkzfluaalojxhwlhvwk.supabase.co/rest/v1/Orders";
@@ -14,14 +13,40 @@ const headers = {
 
 const STORAGE_KEY = "coffee-dashboard-orders";
 
+// Transform flat structure dari Supabase ke nested structure
+const normalizeOrderFromSupabase = (order) => {
+  // Handle format flattened dari Supabase: item_name, item_qty, item_price, order_total
+  if (order.item_name && !Array.isArray(order.items)) {
+    return {
+      id: order.id ?? order.order_id,
+      order_id: order.order_id,
+      customer_id: order.customer_id,
+      status: order.status || "Pending",
+      total: order.order_total || order.total,
+      items: [
+        {
+          name: order.item_name,
+          qty: Number(order.item_qty) || 1,
+          price: Number(order.item_price) || 0,
+        },
+      ],
+      order_date: order.order_date,
+    };
+  }
+  // Handle format nested (dari localStorage atau JSON)
+  return order;
+};
+
 const cleanOrder = (order) => {
-  const items = removeItemSubtotals(order.items || []);
+  // Normalize format Supabase terlebih dahulu
+  const normalized = normalizeOrderFromSupabase(order);
+  const items = removeItemSubtotals(normalized.items || []);
 
   return {
-    ...order,
-    id: order.id ?? order.order_id,
+    ...normalized,
+    id: normalized.id ?? normalized.order_id,
     items,
-    total: getOrderTotal(items),
+    total: normalized.total || getOrderTotal(items),
   };
 };
 
@@ -43,21 +68,34 @@ export const ordersAPI = {
       const res = await axios.get(API_URL, { headers });
       if (!Array.isArray(res.data)) return [];
       return res.data.map(cleanOrder);
-    } catch {
+    } catch (err) {
       // fallback (prevents raw errors in UI)
+      // But we also log the real Supabase error so we can debug why data isn't loading.
+      console.error("Supabase fetchOrders failed:", {
+        message: err?.message,
+        status: err?.response?.status,
+        data: err?.response?.data,
+      });
       return readFallbackOrders();
     }
   },
 
   async createOrder(data) {
-    // Expected minimal fields:
-    // order_id (or id), order_date, items [{name, qty, price}], total_price
+    // Data dari component punya format nested dengan items array
+    // Kita flatten untuk Supabase yang expect: item_name, item_qty, item_price, order_total
+    const items = removeItemSubtotals(data.items || []);
+    const firstItem = items[0] || {};
+
+    // Format flattened untuk Supabase (hanya item pertama untuk sekarang)
     const payload = {
-      order_date: data.order_date || new Date().toISOString(),
+      order_id: data.order_id,
       customer_id: data.customer_id || null,
-      items: removeItemSubtotals(data.items || []),
-      total_price: getOrderTotal(removeItemSubtotals(data.items || [])),
       status: data.status || "Pending",
+      order_date: data.order_date || new Date().toISOString().split('T')[0],
+      order_total: getOrderTotal(items),
+      item_name: firstItem.name || "",
+      item_qty: firstItem.qty || 1,
+      item_price: firstItem.price || 0,
     };
 
     try {
@@ -65,13 +103,14 @@ export const ordersAPI = {
       const created = Array.isArray(res.data) ? res.data[0] : res.data;
       return cleanOrder(created);
     } catch (err) {
-      // Fallback to localStorage if Supabase fails (e.g., RLS policy)
+      // Fallback to localStorage if Supabase fails
       console.warn("Supabase insert failed, using localStorage fallback:", err);
       const orders = readFallbackOrders();
       const newOrder = cleanOrder({
         ...payload,
-        id: `ORD-${Date.now()}`,
-        order_id: `ORD-${Date.now()}`,
+        id: data.order_id,
+        items: items,
+        total: payload.order_total,
       });
       orders.push(newOrder);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(orders.map(cleanOrder)));

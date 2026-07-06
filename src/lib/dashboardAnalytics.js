@@ -142,10 +142,14 @@ export const getLowStockProducts = (products) => {
 };
 
 export const getProductTrendComparison = (orders, selectedProducts) => {
-  const monthRows = {};
+  const normalize = (s) => String(s ?? "").trim().toLowerCase();
+  const selectedSet = new Set(selectedProducts.map((p) => normalize(p)));
 
+  const monthRows = {};
   monthNames.forEach((month) => {
     monthRows[month] = { month };
+
+    // IMPORTANT: keep consistent keys for recharts dataKey.
     selectedProducts.forEach((productName) => {
       monthRows[month][productName] = 0;
     });
@@ -156,16 +160,28 @@ export const getProductTrendComparison = (orders, selectedProducts) => {
 
     const date = new Date(order.order_date);
     const month = monthNames[date.getMonth()];
+    if (!month) return;
+
     const items = Array.isArray(order.items) ? order.items : [];
 
     items.forEach((item) => {
-      if (selectedProducts.includes(item.name)) {
-        monthRows[month][item.name] += Number(item.qty || 0);
-      }
+      const itemName = item?.name ?? item?.nama_product ?? item?.product_name;
+      const normalizedItemName = normalize(itemName);
+      if (!selectedSet.has(normalizedItemName)) return;
+
+      const qty = Number(item?.qty || 0);
+      if (!qty) return;
+
+      // Find the exact key name present in selectedProducts (case-sensitive) for recharts dataKey
+      const exactKey = selectedProducts.find((p) => normalize(p) === normalizedItemName);
+      if (!exactKey) return;
+
+      monthRows[month][exactKey] += qty;
     });
   });
 
-  return monthNames
-    .map((month) => monthRows[month])
-    .filter((row) => selectedProducts.some((productName) => row[productName] > 0));
+  // Keep months where at least one series has any value, so chart isn't empty.
+  return monthNames.map((month) => monthRows[month]).filter((row) => {
+    return selectedProducts.some((productName) => Number(row[productName] || 0) > 0);
+  });
 };

@@ -59,7 +59,9 @@ export default function Dashboard() {
   const [activeDashboard, setActiveDashboard] = useState("overview");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [dashboardData, setDashboardData] = useState(emptyDashboardData);
+
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
 
   useEffect(() => {
